@@ -1,0 +1,509 @@
+<title>Yankı</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Work+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root{
+  --bg:#f2f1ec;
+  --surface:#ffffff;
+  --surface-alt:#e9e7dd;
+  --line:#dddad0;
+  --ink:#1c2220;
+  --ink-2:#535a51;
+  --ink-mute:#8a8f81;
+  --accent:#0a8a72;
+  --accent-ink:#06362c;
+  --accent-soft:#d9efe8;
+  --risk:#c2410c;
+  --risk-soft:#f6e3d6;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#15170f1a; --bg:#17180fe6; --bg:#16170f; --bg:#16170f;
+    --bg:#15160f;
+    --surface:#1d1f16;
+    --surface-alt:#262820;
+    --line:#35372c;
+    --ink:#ece9de;
+    --ink-2:#b7b9ab;
+    --ink-mute:#80836f;
+    --accent:#2fa589;
+    --accent-ink:#a9e9d6;
+    --accent-soft:#1f3a30;
+    --risk:#d4682f;
+    --risk-soft:#3c2619;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#15160f;
+  --surface:#1d1f16;
+  --surface-alt:#262820;
+  --line:#35372c;
+  --ink:#ece9de;
+  --ink-2:#b7b9ab;
+  --ink-mute:#80836f;
+  --accent:#2fa589;
+  --accent-ink:#a9e9d6;
+  --accent-soft:#1f3a30;
+  --risk:#d4682f;
+  --risk-soft:#3c2619;
+}
+*{box-sizing:border-box;}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:'Work Sans',system-ui,sans-serif;
+  margin:0;
+}
+.wrap{
+  max-width:920px;
+  margin:0 auto;
+  padding:48px 28px 80px;
+}
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:var(--risk);
+  background:var(--risk-soft);
+  border:1px solid color-mix(in srgb, var(--risk) 35%, transparent);
+  padding:5px 10px;
+  border-radius:100px;
+}
+header{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+  padding-bottom:28px;
+  border-bottom:1px solid var(--line);
+  margin-bottom:36px;
+}
+.brand-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:16px;
+  flex-wrap:wrap;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.mark{
+  width:40px;height:40px;border-radius:10px;
+  background:var(--accent-ink);
+  display:flex;align-items:center;justify-content:center;
+  flex:none;
+}
+.mark svg{display:block;}
+.brand-name{
+  font-family:'Fraunces',serif;
+  font-weight:600;
+  font-size:22px;
+  letter-spacing:-.01em;
+}
+.brand-sub{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  color:var(--ink-mute);
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  margin-top:2px;
+}
+h1{
+  font-family:'Fraunces',serif;
+  font-weight:600;
+  font-size:clamp(28px,4vw,38px);
+  line-height:1.15;
+  letter-spacing:-.01em;
+  margin:0;
+  text-wrap:balance;
+}
+.period{
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;
+  color:var(--ink-2);
+}
+.deck{
+  color:var(--ink-2);
+  font-size:15.5px;
+  line-height:1.6;
+  max-width:62ch;
+}
+
+.kpis{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1px;
+  background:var(--line);
+  border:1px solid var(--line);
+  border-radius:14px;
+  overflow:hidden;
+  margin-bottom:40px;
+}
+.kpi{
+  background:var(--surface);
+  padding:18px 16px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.kpi-label{
+  font-size:12px;
+  color:var(--ink-mute);
+  line-height:1.3;
+}
+.kpi-value{
+  font-family:'JetBrains Mono',monospace;
+  font-weight:700;
+  font-size:26px;
+  font-variant-numeric:tabular-nums;
+}
+.kpi-delta{
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;
+  font-weight:500;
+}
+.kpi-delta.up{color:var(--accent);}
+.kpi-delta.down{color:var(--risk);}
+
+section{margin-bottom:44px;}
+.section-head{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:16px;
+  flex-wrap:wrap;
+}
+h2{
+  font-family:'Fraunces',serif;
+  font-weight:600;
+  font-size:19px;
+  margin:0;
+}
+.section-note{
+  font-size:12.5px;
+  color:var(--ink-mute);
+  font-family:'JetBrains Mono',monospace;
+}
+
+.panel{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:22px;
+}
+
+/* trend chart */
+.chart-row{display:flex;gap:28px;align-items:flex-end;}
+.chart-svg{flex:1;min-width:0;}
+.chart-stat{
+  flex:none;
+  text-align:right;
+}
+.chart-stat .big{
+  font-family:'JetBrains Mono',monospace;
+  font-weight:700;
+  font-size:34px;
+  color:var(--accent-ink);
+  line-height:1;
+}
+.chart-stat .small{
+  font-size:12.5px;
+  color:var(--ink-2);
+  margin-top:6px;
+}
+
+/* churn reasons */
+.reasons{display:flex;flex-direction:column;gap:14px;}
+.reason-row{display:grid;grid-template-columns:168px 1fr 48px;align-items:center;gap:12px;}
+.reason-name{font-size:14px;color:var(--ink);}
+.reason-track{height:10px;background:var(--surface-alt);border-radius:6px;overflow:hidden;}
+.reason-fill{height:100%;background:var(--accent);border-radius:6px;}
+.reason-pct{font-family:'JetBrains Mono',monospace;font-size:13px;text-align:right;color:var(--ink-2);font-variant-numeric:tabular-nums;}
+
+/* quotes */
+.quotes{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+}
+.quote{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-left:3px solid var(--accent);
+  border-radius:10px;
+  padding:16px 16px 14px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.quote p{
+  margin:0;
+  font-size:14.5px;
+  line-height:1.55;
+  color:var(--ink);
+}
+.quote-tag{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  color:var(--ink-mute);
+  text-transform:uppercase;
+  letter-spacing:.04em;
+}
+
+/* actions */
+.actions{display:flex;flex-direction:column;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;}
+.action{
+  background:var(--surface);
+  display:grid;
+  grid-template-columns:36px 1fr;
+  gap:14px;
+  padding:16px 18px;
+  align-items:start;
+}
+.action-num{
+  font-family:'JetBrains Mono',monospace;
+  font-weight:700;
+  font-size:14px;
+  color:var(--accent-ink);
+  background:var(--accent-soft);
+  width:28px;height:28px;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+}
+.action-title{font-size:14.5px;font-weight:500;margin:0 0 3px;}
+.action-body{font-size:13.5px;color:var(--ink-2);margin:0;line-height:1.5;}
+
+footer{
+  border-top:1px solid var(--line);
+  padding-top:22px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.footnote{
+  font-size:12.5px;
+  color:var(--ink-mute);
+  line-height:1.6;
+  max-width:68ch;
+}
+.footnote b{color:var(--ink-2);}
+
+@media (max-width:700px){
+  .kpis{grid-template-columns:repeat(2,1fr);}
+  .quotes{grid-template-columns:1fr;}
+  .chart-row{flex-direction:column;align-items:stretch;}
+  .chart-stat{text-align:left;}
+  .reason-row{grid-template-columns:120px 1fr 40px;}
+}
+</style>
+
+<div class="wrap">
+
+  <header>
+    <div class="brand-row">
+      <div class="brand">
+        <div class="mark">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="2.6" fill="#2fa589"/>
+            <circle cx="10" cy="10" r="6.2" stroke="#2fa589" stroke-width="1.4" opacity="0.55" fill="none"/>
+            <circle cx="10" cy="10" r="9.3" stroke="#2fa589" stroke-width="1.2" opacity="0.3" fill="none"/>
+          </svg>
+        </div>
+        <div>
+          <div class="brand-name">Yankı</div>
+          <div class="brand-sub">Görüşme İçgörü Platformu</div>
+        </div>
+      </div>
+      <span class="badge">● Örnek rapor — mock veri</span>
+    </div>
+    <h1>Aylık Müşteri İçgörü Raporu</h1>
+    <div class="period">Vektra Yazılım A.Ş. · Eylül 2026 dönemi · 14 Ekim 2026'da oluşturuldu</div>
+    <p class="deck">184 müşteri görüşmesi, hiçbir ham ses ya da transkript şirket dışına çıkmadan, cihaz üzerinde analiz edildi. Bu sayfa, sistemin üreteceği aylık raporun biçimini göstermek için hazırlanmış bir örnektir.</p>
+  </header>
+
+  <section>
+    <div class="kpis">
+      <div class="kpi">
+        <div class="kpi-label">Analiz edilen görüşme</div>
+        <div class="kpi-value">184</div>
+        <div class="kpi-delta up">↑ 22 (geçen aya göre)</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Ortalama memnuniyet skoru</div>
+        <div class="kpi-value">7.6<span style="font-size:14px;color:var(--ink-mute);">/10</span></div>
+        <div class="kpi-delta up">↑ 0.3 puan</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Risk altındaki müşteri</div>
+        <div class="kpi-value">12</div>
+        <div class="kpi-delta up">↓ 7 (19'dan)</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">İnsan müdahalesi gerekmeyen analiz</div>
+        <div class="kpi-value">%91</div>
+        <div class="kpi-delta up">↑ 4 puan</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>Memnuniyet skoru trendi</h2>
+      <span class="section-note">6 aylık, 0–10 ölçek</span>
+    </div>
+    <div class="panel">
+      <div class="chart-row">
+        <svg class="chart-svg" viewBox="0 0 560 180" role="img" aria-label="Nisan'dan Eylül'e memnuniyet skoru 6.4'ten 7.6'ya yükseldi">
+          <defs>
+            <linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#0a8a72" stop-opacity="0.22"/>
+              <stop offset="100%" stop-color="#0a8a72" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <!-- gridlines at 6,7,8 of a 5-9 scale mapped to y 150..20 -->
+          <g stroke="var(--line)" stroke-width="1">
+            <line x1="40" y1="130" x2="540" y2="130"/>
+            <line x1="40" y1="80" x2="540" y2="80"/>
+            <line x1="40" y1="30" x2="540" y2="30"/>
+          </g>
+          <g font-family="JetBrains Mono, monospace" font-size="11" fill="var(--ink-mute)">
+            <text x="30" y="134" text-anchor="end">6</text>
+            <text x="30" y="84" text-anchor="end">7</text>
+            <text x="30" y="34" text-anchor="end">8</text>
+          </g>
+          <!-- points: Nisan 6.4, Mayıs 6.6, Haziran 6.3, Temmuz 6.9, Ağustos 7.3, Eylül 7.6 -->
+          <!-- x: 40,140,240,340,440,540  y = 180 - (v-5)*50 -->
+          <path d="M40,130 L140,120 L240,135 L340,105 L440,65 L540,50 L540,160 L40,160 Z" fill="url(#areaFill)"/>
+          <path d="M40,130 L140,120 L240,135 L340,105 L440,65 L540,50" fill="none" stroke="#0a8a72" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <g fill="#0a8a72">
+            <circle cx="40" cy="130" r="3.5"/>
+            <circle cx="140" cy="120" r="3.5"/>
+            <circle cx="240" cy="135" r="3.5"/>
+            <circle cx="340" cy="105" r="3.5"/>
+            <circle cx="440" cy="65" r="3.5"/>
+            <circle cx="540" cy="50" r="4.5" stroke="var(--surface)" stroke-width="2"/>
+          </g>
+          <g font-family="JetBrains Mono, monospace" font-size="11" fill="var(--ink-mute)">
+            <text x="40" y="172" text-anchor="middle">Nis</text>
+            <text x="140" y="172" text-anchor="middle">May</text>
+            <text x="240" y="172" text-anchor="middle">Haz</text>
+            <text x="340" y="172" text-anchor="middle">Tem</text>
+            <text x="440" y="172" text-anchor="middle">Ağu</text>
+            <text x="540" y="172" text-anchor="middle">Eyl</text>
+          </g>
+          <text x="540" y="40" text-anchor="end" font-family="JetBrains Mono, monospace" font-weight="700" font-size="13" fill="var(--accent-ink)">7.6</text>
+        </svg>
+        <div class="chart-stat">
+          <div class="big">+1.2</div>
+          <div class="small">6 ayda toplam<br/>puan artışı</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>Ayrılma riskinin başlıca nedenleri</h2>
+      <span class="section-note">riskli olarak işaretlenen görüşmeler içinde pay</span>
+    </div>
+    <div class="panel">
+      <div class="reasons">
+        <div class="reason-row">
+          <div class="reason-name">Entegrasyon / API sorunları</div>
+          <div class="reason-track"><div class="reason-fill" style="width:34%"></div></div>
+          <div class="reason-pct">%34</div>
+        </div>
+        <div class="reason-row">
+          <div class="reason-name">Fiyat / sözleşme şartları</div>
+          <div class="reason-track"><div class="reason-fill" style="width:22%"></div></div>
+          <div class="reason-pct">%22</div>
+        </div>
+        <div class="reason-row">
+          <div class="reason-name">Destek yanıt süresi</div>
+          <div class="reason-track"><div class="reason-fill" style="width:18%"></div></div>
+          <div class="reason-pct">%18</div>
+        </div>
+        <div class="reason-row">
+          <div class="reason-name">Eksik özellik talebi</div>
+          <div class="reason-track"><div class="reason-fill" style="width:15%"></div></div>
+          <div class="reason-pct">%15</div>
+        </div>
+        <div class="reason-row">
+          <div class="reason-name">Rakip teklifi</div>
+          <div class="reason-track"><div class="reason-fill" style="width:11%"></div></div>
+          <div class="reason-pct">%11</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>Öne çıkan alıntılar</h2>
+      <span class="section-note">isim ve şirket bilgisi otomatik maskelendi</span>
+    </div>
+    <div class="quotes">
+      <div class="quote">
+        <p>"Entegrasyon üç haftadır tamamlanmadı, ekibimiz manuel veri girişine geri döndü."</p>
+        <div class="quote-tag">Müşteri · Kurumsal Plan</div>
+      </div>
+      <div class="quote">
+        <p>"Destek bileti 4 gündür yanıtsız, bu süre bizim için kritik."</p>
+        <div class="quote-tag">Müşteri · Büyüme Planı</div>
+      </div>
+      <div class="quote">
+        <p>"Fiyat artışını anlıyoruz ama yenileme şartları çok ani bildirildi."</p>
+        <div class="quote-tag">Müşteri · Kurumsal Plan</div>
+      </div>
+    </div>
+  </section>
+
+  <section style="margin-bottom:8px;">
+    <div class="section-head">
+      <h2>Önerilen aksiyonlar</h2>
+      <span class="section-note">etkiye göre sıralı</span>
+    </div>
+    <div class="actions">
+      <div class="action">
+        <div class="action-num">1</div>
+        <div>
+          <p class="action-title">Kurumsal müşteriler için öncelikli entegrasyon SLA'sı tanımlayın</p>
+          <p class="action-body">Riskli görüşmelerin %34'ü entegrasyon gecikmesine işaret ediyor — en yüksek etkili alan.</p>
+        </div>
+      </div>
+      <div class="action">
+        <div class="action-num">2</div>
+        <div>
+          <p class="action-title">Destek yanıt süresini 48 saate çekin</p>
+          <p class="action-body">Özellikle Büyüme Planı müşterilerinde yanıt gecikmesi doğrudan memnuniyet düşüşüyle ilişkili.</p>
+        </div>
+      </div>
+      <div class="action">
+        <div class="action-num">3</div>
+        <div>
+          <p class="action-title">Sözleşme yenileme bildirimini 60 gün öncesine alın</p>
+          <p class="action-body">Ani bildirim şikayetleri fiyat/sözleşme kategorisinin üçte birini oluşturuyor.</p>
+        </div>
+      </div>
+      <div class="action">
+        <div class="action-num">4</div>
+        <div>
+          <p class="action-title">En çok talep edilen 3 özelliği yol haritasına ekleyip müşterilere proaktif bildirin</p>
+          <p class="action-body">Beklenti yönetimi, "eksik özellik" nedenli ayrılma riskini azaltır.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p class="footnote"><b>Yöntem:</b> Görüşme ses kaydı/transkripti cihaz üzerinde çalışan modellerle (yerel konuşma tanıma + yerel dil modeli) işlenir; yalnızca bu özet rapor üretilir, ham veri hiçbir zaman şirket dışına çıkmaz.</p>
+    <p class="footnote"><b>Not:</b> Bu sayfadaki şirket adı, sayılar ve alıntılar kurgusaldır; sistemin hedeflediği çıktının biçimini göstermek amacıyla hazırlanmıştır.</p>
+  </footer>
+
+</div>

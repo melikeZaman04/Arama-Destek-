@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Yanki Gorusme Analiz Ciktisi",
+  "description": "Gemma analiz motorunun her tur ve gorusme sonunda urettigi ortak sozlesme. Orchestration (Melike) bu JSON'u uretir cagriyi tetikler, frontend (Beyza) bu JSON'u okur rapor ekranini doldurur.",
+  "type": "object",
+  "properties": {
+    "turn_type": {
+      "type": "string",
+      "enum": ["in_progress", "completed"],
+      "description": "in_progress: gorusme suruyor, next_question dolu olmali. completed: gorusme bitti, report dolu olmali."
+    },
+    "next_question": {
+      "type": ["string", "null"],
+      "description": "turn_type=in_progress iken ElevenLabs'a gidecek bir sonraki soru/yanit metni."
+    },
+    "report": {
+      "type": ["object", "null"],
+      "description": "turn_type=completed iken doldurulur. Alanlar frontend/data/sample_report.json ile birebir eslesir.",
+      "properties": {
+        "memnuniyet_skoru": { "type": "number", "minimum": 0, "maximum": 10 },
+        "churn_nedeni": { "type": "string" },
+        "alinti": { "type": "string", "description": "Musteriden dogrudan, anonimlestirilmis bir cumle." },
+        "aksiyon_onerisi": { "type": "string" }
+      },
+      "required": ["memnuniyet_skoru", "churn_nedeni", "alinti", "aksiyon_onerisi"]
+    }
+  },
+  "required": ["turn_type"]
+}
