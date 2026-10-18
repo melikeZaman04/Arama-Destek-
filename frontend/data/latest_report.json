@@ -1,0 +1,6 @@
+{
+  "memnuniyet_skoru": 8.4,
+  "churn_nedeni": "API Dokümantasyonu & Yanıt Süresi",
+  "alinti": "Dokümantasyondaki webhook örnekleri güncellendiğinde entegrasyonu 2 günde bitirdik.",
+  "aksiyon_onerisi": "Geliştirici portalına interaktif SDK playground ekleyin."
+}

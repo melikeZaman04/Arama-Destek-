@@ -24,25 +24,32 @@ OUT_DIR.mkdir(exist_ok=True)
 
 
 def synthesize(text: str, out_path: Path) -> Path:
-    """ElevenLabs TTS: metni sese cevirip out_path'e yazar."""
-    from elevenlabs.client import ElevenLabs
+    """ElevenLabs TTS: metni sese cevirip out_path'e yazar.
+    API anahtari veya paket yoksa mock ses dosyasi olusturur.
+    """
+    try:
+        from elevenlabs.client import ElevenLabs
+        api_key = os.environ.get("ELEVENLABS_API_KEY")
+        if not api_key:
+            print("[Bilgi] ELEVENLABS_API_KEY tanimli degil, mock mp3 olusturuluyor...")
+            out_path.write_bytes(b"//ID3 MOCK AUDIO STREAM")
+            return out_path
 
-    api_key = os.environ.get("ELEVENLABS_API_KEY")
-    if not api_key:
-        raise RuntimeError("ELEVENLABS_API_KEY ortam degiskeni ayarli degil")
-
-    voice_id = os.environ.get("ELEVENLABS_VOICE_ID", "21m00Tcm4TlvDq8ikWAM")  # varsayilan ornek ses
-
-    client = ElevenLabs(api_key=api_key)
-    audio = client.text_to_speech.convert(
-        voice_id=voice_id,
-        text=text,
-        model_id="eleven_multilingual_v2",
-    )
-    with open(out_path, "wb") as f:
-        for chunk in audio:
-            f.write(chunk)
-    return out_path
+        voice_id = os.environ.get("ELEVENLABS_VOICE_ID", "21m00Tcm4TlvDq8ikWAM")
+        client = ElevenLabs(api_key=api_key)
+        audio = client.text_to_speech.convert(
+            voice_id=voice_id,
+            text=text,
+            model_id="eleven_multilingual_v2",
+        )
+        with open(out_path, "wb") as f:
+            for chunk in audio:
+                f.write(chunk)
+        return out_path
+    except ImportError:
+        print("[Bilgi] elevenlabs paketi yuklu degil, mock mp3 olusturuluyor...")
+        out_path.write_bytes(b"//ID3 MOCK AUDIO STREAM")
+        return out_path
 
 
 def main():

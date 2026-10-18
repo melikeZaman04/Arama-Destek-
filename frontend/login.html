@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yankı — Güvenli Giriş</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Work+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+  <style>
+    :root {
+      --brand: #07382d;
+      --brand-mid: #0a5240;
+      --brand-accent: #15803d;
+      --border: #e4e2da;
+      --text-1: #111815;
+      --text-2: #525a55;
+      --text-muted: #8c938e;
+      --bg: #f8f7f3;
+      --surface: #ffffff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      font-family: 'Work Sans', sans-serif;
+      color: var(--text-1);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ---- TOP BAR ---- */
+    .topbar {
+      background: var(--brand);
+      padding: 0 36px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .topbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .topbar-icon {
+      width: 34px; height: 34px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .topbar-name {
+      font-family: 'Fraunces', serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: -0.01em;
+    }
+    .topbar-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #d1fae5;
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #a7f3d0;
+    }
+
+    /* ---- STATUS BAR ---- */
+    .status-bar {
+      background: #f0f9f5;
+      border-bottom: 1px solid #d1fae5;
+      padding: 8px 36px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #065f46;
+    }
+    .status-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: #10b981;
+      display: inline-block; margin-right: 6px;
+    }
+
+    /* ---- MAIN CONTENT ---- */
+    .main-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+    }
+    .login-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    /* ---- LEFT CARD (Koyu Yeşil Bilgi Kartı) ---- */
+    .left-card {
+      background: linear-gradient(135deg, #07382d 0%, #0a5240 100%);
+      border-radius: 16px;
+      padding: 32px;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .left-card::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+    }
+    .shield-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: #d1fae5;
+      padding: 4px 10px;
+      border-radius: 100px;
+      width: fit-content;
+    }
+    .left-heading {
+      font-family: 'Fraunces', serif;
+      font-size: 26px;
+      font-weight: 600;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+    }
+    .left-desc {
+      font-size: 13px;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.6;
+    }
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .metric-box {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 10px;
+      padding: 12px;
+    }
+    .metric-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 4px;
+      letter-spacing: 0.04em;
+    }
+    .metric-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 22px;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1;
+    }
+    .metric-sub {
+      font-size: 11px;
+      color: rgba(255,255,255,0.5);
+      margin-top: 2px;
+    }
+    .pipeline-flow-mini {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0,0,0,0.15);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #d1fae5;
+    }
+    .pipe-step-mini {
+      background: rgba(255,255,255,0.12);
+      padding: 3px 8px;
+      border-radius: 5px;
+      font-size: 10px;
+    }
+    .pipe-step-mini.active {
+      background: #d97706;
+      color: #fff;
+    }
+    .pipe-arrow { color: rgba(255,255,255,0.4); }
+    .left-features {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .feat-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12.5px;
+      color: rgba(255,255,255,0.8);
+    }
+    .feat-icon {
+      width: 22px; height: 22px; border-radius: 5px;
+      background: rgba(255,255,255,0.12);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    /* ---- RIGHT FORM CARD ---- */
+    .right-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.04);
+    }
+    .form-header {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .form-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+    }
+    .form-title {
+      font-family: 'Fraunces', serif;
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--text-1);
+    }
+    .form-sub {
+      font-size: 13px;
+      color: var(--text-2);
+    }
+
+    /* INPUTS */
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .field-label {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-1);
+    }
+    .field-input-wrap {
+      position: relative;
+    }
+    .field-input {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 10px 14px 10px 38px;
+      font-size: 13.5px;
+      font-family: 'Work Sans', sans-serif;
+      color: var(--text-1);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .field-input:focus { border-color: var(--brand-accent); background: #fff; }
+    .field-input::placeholder { color: #b0b8b2; }
+    .field-icon {
+      position: absolute;
+      left: 12px; top: 50%;
+      transform: translateY(-50%);
+      color: #b0b8b2;
+      font-size: 14px;
+    }
+    .pass-toggle {
+      position: absolute;
+      right: 12px; top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #b0b8b2;
+      background: none;
+      border: none;
+      font-size: 15px;
+    }
+
+    /* REMEMBER + FORGOT */
+    .row-between {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .check-label {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12.5px;
+      color: var(--text-2);
+      cursor: pointer;
+    }
+    .check-label input { accent-color: var(--brand-accent); cursor: pointer; }
+    .forgot-link {
+      font-size: 12.5px;
+      color: var(--brand-accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .forgot-link:hover { text-decoration: underline; }
+
+    /* LOGIN BUTTON */
+    .btn-login {
+      width: 100%;
+      background: var(--brand);
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      padding: 13px;
+      font-size: 14.5px;
+      font-weight: 600;
+      font-family: 'Work Sans', sans-serif;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background 0.2s;
+    }
+    .btn-login:hover { background: var(--brand-mid); }
+
+    /* ERROR */
+    .error-msg {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 12.5px;
+      color: #b91c1c;
+      display: none;
+    }
+
+    /* DIVIDER */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* REGISTER LINK */
+    .register-link-row {
+      text-align: center;
+      font-size: 12.5px;
+      color: var(--text-2);
+    }
+    .register-link-row a {
+      color: var(--brand-accent);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .register-link-row a:hover { text-decoration: underline; }
+
+    /* ---- FEATURE BADGES (Bottom 4) ---- */
+    .features-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto 40px;
+    }
+    .feat-badge {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .feat-badge-icon {
+      font-size: 18px;
+      margin-bottom: 2px;
+    }
+    .feat-badge-title {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-1);
+    }
+    .feat-badge-sub {
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+
+    /* ---- FOOTER ---- */
+    .page-footer {
+      border-top: 1px solid var(--border);
+      padding: 14px 36px;
+      display: flex;
+      justify-content: space-between;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    @media (max-width: 700px) {
+      .login-wrapper { grid-template-columns: 1fr; }
+      .left-card { display: none; }
+      .features-bar { grid-template-columns: repeat(2, 1fr); }
+      .topbar { padding: 0 16px; }
+      .status-bar { padding: 6px 16px; }
+      .main-content { padding: 24px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="topbar-brand">
+      <div class="topbar-icon">
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+          <circle cx="10" cy="10" r="2.6" fill="#2fa589"/>
+          <circle cx="10" cy="10" r="6.2" stroke="#2fa589" stroke-width="1.4" opacity="0.6" fill="none"/>
+          <circle cx="10" cy="10" r="9.3" stroke="#2fa589" stroke-width="1.2" opacity="0.35" fill="none"/>
+        </svg>
+      </div>
+      <span class="topbar-name">Yankı</span>
+      <span class="topbar-tag">VOICE PII</span>
+    </div>
+    <div class="topbar-right">
+      <span>🟢 TÜBİTAK BİLGEM &amp; KVKK 6698 UYUMLU</span>
+      <span>🔒 E2E Şifreli</span>
+    </div>
+  </div>
+
+  <!-- STATUS BAR -->
+  <div class="status-bar">
+    <div><span class="status-dot"></span>HSM DÜĞÜM DURUMU: ANK-REGION-01 [GÜVENLİ &amp; AKTİF]</div>
+    <div>TÜBİTAK BİLGEM &amp; KVKK Seviye 4 Uyumlu &nbsp;•&nbsp; WebCrypto E2EE 4096-bit</div>
+  </div>
+
+  <!-- MAIN -->
+  <main class="main-content">
+    <div style="width:100%;max-width:900px;display:flex;flex-direction:column;gap:24px;">
+      <div class="login-wrapper">
+
+        <!-- SOL: BİLGİ KARTI -->
+        <div class="left-card">
+          <div class="shield-badge">🛡️ SIFIR SIZINTI PII KALKANI</div>
+
+          <h2 style="font-family:'Fraunces',serif;font-size:26px;font-weight:600;line-height:1.25;letter-spacing:-0.01em;">
+            Kişisel Veri Havada<br>Yakalanır, Bellekte Eritilir.
+          </h2>
+
+          <p style="font-size:13px;color:rgba(255,255,255,0.75);line-height:1.6;">
+            Görüşme ses akışları ve transkriptler asla harici üçüncü parti buluta iletilmez. On-Premises veya Özel Donanımınızda milisaniyeler içinde filtrelenir.
+          </p>
+
+          <div class="metrics-grid">
+            <div class="metric-box">
+              <div class="metric-label">GECİKME HIZI</div>
+              <div class="metric-val">&lt; 38 ms</div>
+              <div class="metric-sub">Stream Maskeleme</div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-label">DOĞRULUK SKORU</div>
+              <div class="metric-val">%99.86</div>
+              <div class="metric-sub">TCKN, İsim &amp; Tel</div>
+            </div>
+          </div>
+
+          <div class="pipeline-flow-mini">
+            <span class="pipe-step-mini">HAM SES</span>
+            <span class="pipe-arrow">→</span>
+            <span class="pipe-step-mini active">PII AYIKLAMA</span>
+            <span class="pipe-arrow">→</span>
+            <span class="pipe-step-mini">TEMİZ VERİ</span>
+            <span style="margin-left:auto;font-size:10px;color:rgba(255,255,255,0.4);">AES-256 GCM</span>
+          </div>
+
+          <div class="left-features">
+            <div class="feat-row">
+              <div class="feat-icon">⚡</div>
+              <span>Gerçek zamanlı PII maskeleme &lt; 38ms</span>
+            </div>
+            <div class="feat-row">
+              <div class="feat-icon">🛡️</div>
+              <span>Sıfır günlük tutma, ham ses kaydedilmez</span>
+            </div>
+            <div class="feat-row">
+              <div class="feat-icon">📋</div>
+              <span>KVKK Madde 12 tam uyumlu</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- SAĞ: GİRİŞ FORMU -->
+        <div class="right-card">
+          <div class="form-header">
+            <div class="form-tag">YETKİLİ KİMLİK DOĞRULAMA</div>
+            <div class="form-title">Yankı Yönetici Girişi</div>
+            <div class="form-sub">Yönetim konsoluna güvenli erişim.</div>
+          </div>
+
+          <!-- HATA MESAJI -->
+          <div class="error-msg" id="error-box">E-posta veya şifre hatalı. Lütfen tekrar deneyin.</div>
+
+          <div id="login-form" style="display:flex;flex-direction:column;gap:14px;">
+            <!-- E-POSTA -->
+            <div class="field-group">
+              <label class="field-label">Kurumsal E-posta Adresi</label>
+              <div class="field-input-wrap">
+                <span class="field-icon">📧</span>
+                <input type="email" class="field-input" id="inp-email" placeholder="ad.soyad@sirket.com" autocomplete="email">
+              </div>
+            </div>
+
+            <!-- ŞİFRE -->
+            <div class="field-group">
+              <label class="field-label">Kullanıcı Parolası</label>
+              <div class="field-input-wrap">
+                <span class="field-icon">🔑</span>
+                <input type="password" class="field-input" id="inp-password" placeholder="••••••••••" autocomplete="current-password">
+                <button class="pass-toggle" type="button" onclick="togglePass()" id="pass-eye">👁</button>
+              </div>
+            </div>
+
+            <!-- HATIRLA & UNUTTUM -->
+            <div class="row-between">
+              <label class="check-label">
+                <input type="checkbox" id="remember-me" checked>
+                <span>Beni bu cihazda hatırla</span>
+              </label>
+              <a href="#" class="forgot-link">Şifremi Unuttum</a>
+            </div>
+
+            <!-- GİRİŞ BUTONU -->
+            <button class="btn-login" onclick="doLogin()">
+              🔐 Güvenli Giriş Yap →
+            </button>
+          </div>
+
+          <div class="divider">veya</div>
+
+          <!-- KAYIT LINKI -->
+          <div class="register-link-row">
+            Kurumsal Yankı hesabınız henüz yok mu?
+            <a href="register.html">Kurumsal Kayıt Talebi Oluşturun →</a>
+          </div>
+        </div>
+
+      </div><!-- end .login-wrapper -->
+
+      <!-- ALT 4 ÖZELLIK KARTI -->
+      <div class="features-bar">
+        <div class="feat-badge">
+          <div class="feat-badge-icon">⚙️</div>
+          <div class="feat-badge-title">Donanımsal GPU TEE</div>
+          <div class="feat-badge-sub">NVIDIA Confidential Compute</div>
+        </div>
+        <div class="feat-badge">
+          <div class="feat-badge-icon">🚫</div>
+          <div class="feat-badge-title">Sıfır Günlük Tutma</div>
+          <div class="feat-badge-sub">Ham Ses Asla Kaydedilmez</div>
+        </div>
+        <div class="feat-badge">
+          <div class="feat-badge-icon">📋</div>
+          <div class="feat-badge-title">KVKK Madde 12</div>
+          <div class="feat-badge-sub">Veri Güvenliği Tam Uyum</div>
+        </div>
+        <div class="feat-badge">
+          <div class="feat-badge-icon">🔏</div>
+          <div class="feat-badge-title">WebAuthn / FIDO2</div>
+          <div class="feat-badge-sub">Biyometrik &amp; Fiziksel Çip</div>
+        </div>
+      </div>
+
+    </div><!-- end max-width wrapper -->
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="page-footer">
+    <div>🔒 Uçtan Uca Donanımsal HSM Korumalı · Kişisel Veri Depolanmaz &amp; Kaydedilmez</div>
+    <div>v2.4.8-enc &nbsp;•&nbsp; Mevzuat Bildirimi &nbsp;•&nbsp; Denetim Sertifikası</div>
+  </footer>
+
+  <script>
+    // Demo kullanıcıları (gerçek projede backend doğrular)
+    const DEMO_USERS = [
+      { email: 'beyza@yanki.ai',   password: '1234', name: 'Beyza Hanım',   role: 'Yönetici' },
+      { email: 'dilara@yanki.ai',  password: '1234', name: 'Dilara Hanım',  role: 'Analist' },
+      { email: 'melike@yanki.ai',  password: '1234', name: 'Melike Hanım',  role: 'Orkestrasyon' },
+      { email: 'demo@yanki.ai',    password: 'demo', name: 'Demo Kullanıcı', role: 'Misafir' },
+    ];
+
+    function togglePass() {
+      const inp = document.getElementById('inp-password');
+      const eye = document.getElementById('pass-eye');
+      if (inp.type === 'password') {
+        inp.type = 'text';
+        eye.textContent = '🙈';
+      } else {
+        inp.type = 'password';
+        eye.textContent = '👁';
+      }
+    }
+
+    function doLogin() {
+      const email = document.getElementById('inp-email').value.trim();
+      const pass  = document.getElementById('inp-password').value;
+      const remember = document.getElementById('remember-me').checked;
+      const errBox = document.getElementById('error-box');
+
+      const found = DEMO_USERS.find(u => u.email === email && u.password === pass);
+
+      if (found) {
+        // Kullanıcı bilgilerini kaydet
+        const storage = remember ? localStorage : sessionStorage;
+        storage.setItem('yanki_user', JSON.stringify({
+          name: found.name,
+          email: found.email,
+          role: found.role,
+          loggedAt: new Date().toISOString()
+        }));
+        errBox.style.display = 'none';
+        window.location.href = 'report.html';
+      } else {
+        errBox.style.display = 'block';
+        // Hatalı girişi sil
+        document.getElementById('inp-password').value = '';
+      }
+    }
+
+    // Enter tuşuyla giriş
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Enter') doLogin();
+    });
+
+    // Zaten giriş yapılmışsa direkt dashboard'a yönlendir
+    const existingSession = localStorage.getItem('yanki_user') || sessionStorage.getItem('yanki_user');
+    if (existingSession) {
+      window.location.href = 'report.html';
+    }
+  </script>
+</body>
+</html>
