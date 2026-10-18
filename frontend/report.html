@@ -1056,6 +1056,9 @@
       <button class="nav-btn" onclick="showTab('tab-vault', this)">
         <span>🔒 Güvenli Kasa &amp; JSON</span>
       </button>
+      <button class="nav-btn" onclick="showTab('tab-demo', this)" style="background:rgba(245,158,11,0.18);color:#fef3c7;font-weight:600;">
+        <span>🎤 Canlı Demo</span>
+      </button>
     </nav>
   </header>
 
@@ -1674,6 +1677,83 @@
       </div>
     </section>
 
+    <!-- =========================================================
+         5. SAYFA: CANLI DEMO — Gemma + ElevenLabs
+         ========================================================= -->
+    <section id="tab-demo" class="tab-pane">
+      <div class="title-area">
+        <h1 class="page-h1">Canlı Demo — Gemma &amp; ElevenLabs</h1>
+        <p class="page-sub">Müşteri şikayetini yaz, Gemma analiz etsin, ElevenLabs yanıtı seslendirir.</p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;">
+
+        <!-- SOL: GİRİŞ -->
+        <div style="background:#ffffff;border:1px solid #e6e4dc;border-radius:12px;padding:22px;">
+          <div style="font-size:12px;font-weight:600;color:#525a55;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;">
+            Müşteri Transkripti
+          </div>
+          <textarea id="demo-transcript" rows="7" placeholder="Örn: Entegrasyon üç haftadır tamamlanmadı, ekibimiz manuel veri girişine geri döndü. Çok memnun değiliz." style="width:100%;border:1px solid #e6e4dc;border-radius:8px;padding:12px;font-family:'Work Sans',sans-serif;font-size:13.5px;line-height:1.5;resize:vertical;outline:none;color:#111815;background:#fafaf8;"></textarea>
+
+          <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;">
+            <button onclick="demoSetSample(0)" style="font-size:11px;padding:4px 10px;border-radius:6px;border:1px solid #d1d5db;background:#f8f7f3;cursor:pointer;font-family:'Work Sans',sans-serif;">Örnek 1</button>
+            <button onclick="demoSetSample(1)" style="font-size:11px;padding:4px 10px;border-radius:6px;border:1px solid #d1d5db;background:#f8f7f3;cursor:pointer;font-family:'Work Sans',sans-serif;">Örnek 2</button>
+            <button onclick="demoSetSample(2)" style="font-size:11px;padding:4px 10px;border-radius:6px;border:1px solid #d1d5db;background:#f8f7f3;cursor:pointer;font-family:'Work Sans',sans-serif;">Örnek 3</button>
+          </div>
+
+          <button id="demo-analyze-btn" onclick="runDemoAnalysis()" style="margin-top:14px;width:100%;background:#07382d;color:#ffffff;border:none;border-radius:8px;padding:12px;font-family:'Work Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:background .15s;">
+            🎤 Analiz Et &amp; Seslendir
+          </button>
+
+          <div id="demo-status" style="margin-top:10px;font-size:12.5px;color:#525a55;min-height:20px;"></div>
+        </div>
+
+        <!-- SAĞ: SONUÇ -->
+        <div style="display:flex;flex-direction:column;gap:14px;">
+
+          <!-- SES OYNATICI -->
+          <div id="demo-audio-wrap" style="display:none;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:18px;">
+            <div style="font-size:12px;font-weight:600;color:#15803d;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">🔊 ElevenLabs — Gemma Yanıtı</div>
+            <p id="demo-next-q" style="font-size:13.5px;color:#111815;line-height:1.5;margin-bottom:12px;font-style:italic;"></p>
+            <audio id="demo-audio-player" controls style="width:100%;border-radius:6px;"></audio>
+          </div>
+
+          <!-- RAPOR KARTI -->
+          <div id="demo-report-wrap" style="display:none;background:#ffffff;border:1px solid #e6e4dc;border-radius:12px;padding:20px;">
+            <div style="font-size:12px;font-weight:600;color:#525a55;text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px;">📊 Gemma Raporu</div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+              <div style="background:#f8f7f3;border-radius:8px;padding:12px;text-align:center;">
+                <div style="font-size:11px;color:#8c938e;margin-bottom:4px;">MEMNUNİYET SKORU</div>
+                <div id="demo-score" style="font-size:28px;font-weight:700;color:#07382d;font-family:'JetBrains Mono',monospace;">—</div>
+              </div>
+              <div style="background:#fef2f2;border-radius:8px;padding:12px;">
+                <div style="font-size:11px;color:#b91c1c;margin-bottom:4px;">CHURN NEDENİ</div>
+                <div id="demo-churn" style="font-size:12.5px;color:#111815;line-height:1.4;">—</div>
+              </div>
+            </div>
+
+            <div style="background:#fffbeb;border-left:3px solid #f59e0b;padding:10px 14px;border-radius:0 8px 8px 0;margin-bottom:10px;">
+              <div style="font-size:11px;color:#92400e;font-weight:600;margin-bottom:4px;">MÜŞTERİ ALINTISI</div>
+              <div id="demo-quote" style="font-size:13px;color:#78350f;font-style:italic;">—</div>
+            </div>
+
+            <div style="background:#f0fdf4;border-left:3px solid #22c55e;padding:10px 14px;border-radius:0 8px 8px 0;">
+              <div style="font-size:11px;color:#14532d;font-weight:600;margin-bottom:4px;">AKSİYON ÖNERİSİ</div>
+              <div id="demo-action" style="font-size:13px;color:#166534;">—</div>
+            </div>
+          </div>
+
+          <!-- BEKLEME / BOŞ DURUM -->
+          <div id="demo-empty" style="background:#f8f7f3;border:1px dashed #d1d5db;border-radius:12px;padding:30px;text-align:center;color:#8c938e;">
+            <div style="font-size:32px;margin-bottom:8px;">🎙️</div>
+            <div style="font-size:13px;">Transkripti gir ve "Analiz Et &amp; Seslendir" butonuna bas.</div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
     <!-- SAYFA ALTI BİLGİ ŞERİDİ (Görsellerdekiyle Birebir) -->
     <footer class="site-footer">
       <div><b>Yankı Audio Telemetry Node:</b> TR-IST-EDGE-01 • Latency: &lt;38ms End-to-End</div>
@@ -2006,7 +2086,97 @@
       initSession();
       loadLatestData();
     });
+
+    // ========= CANLI DEMO: Gemma + ElevenLabs =========
+    const DEMO_SAMPLES = [
+      "Entegrasyon üç haftadır tamamlanmadı, ekibimiz manuel veri girişine geri döndü. Çok memnun değiliz.",
+      "Webhook'lar düzgün çalışmıyor, her gün en az üç-dört hata alıyoruz. Destek ekibiniz geç dönüyor. Fiyat artışı da cabası oldu, ayrılmak üzereyiz.",
+      "Hizmetten genel olarak memnunuz ama mobil entegrasyon hâlâ beta aşamasında. Rakiplerde bu özellik çok daha olgun, düşünmemiz gerekiyor."
+    ];
+
+    function demoSetSample(idx) {
+      document.getElementById('demo-transcript').value = DEMO_SAMPLES[idx];
+    }
+
+    async function runDemoAnalysis() {
+      const transcript = document.getElementById('demo-transcript').value.trim();
+      if (!transcript) { alert('Lütfen bir transkript gir.'); return; }
+
+      const btn = document.getElementById('demo-analyze-btn');
+      const statusEl = document.getElementById('demo-status');
+      const emptyEl = document.getElementById('demo-empty');
+      const audioWrap = document.getElementById('demo-audio-wrap');
+      const reportWrap = document.getElementById('demo-report-wrap');
+
+      btn.disabled = true;
+      btn.textContent = '⏳ Gemma analiz ediyor...';
+      statusEl.textContent = 'Gemma\'ya gönderiliyor...';
+      emptyEl.style.display = 'none';
+      audioWrap.style.display = 'none';
+      reportWrap.style.display = 'none';
+
+      try {
+        const res = await fetch('/api/analyze-and-speak', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ transcript })
+        });
+        const data = await res.json();
+
+        if (data.turn_type === 'in_progress') {
+          // Devam eden görüşme: soru geldi, ses var
+          statusEl.textContent = '✅ Gemma bir sonraki soruyu üretti.';
+          document.getElementById('demo-next-q').textContent = data.next_question || '';
+          const player = document.getElementById('demo-audio-player');
+          if (data.audio_url) {
+            player.src = data.audio_url;
+            player.style.display = 'block';
+            statusEl.textContent = '🔊 ElevenLabs seslendirdi — dinle!';
+          } else {
+            player.style.display = 'none';
+            statusEl.textContent = '✅ Soru üretildi (ElevenLabs ses mevcut değil).';
+          }
+          audioWrap.style.display = 'block';
+
+        } else if (data.turn_type === 'completed' && data.report) {
+          // Tamamlanan görüşme: rapor geldi
+          const r = data.report;
+          document.getElementById('demo-score').textContent = parseFloat(r.memnuniyet_skoru).toFixed(1) + ' / 10';
+          document.getElementById('demo-churn').textContent = r.churn_nedeni || '—';
+          document.getElementById('demo-quote').textContent = '"' + (r.alinti || '') + '"';
+          document.getElementById('demo-action').textContent = r.aksiyon_onerisi || '—';
+          reportWrap.style.display = 'block';
+
+          // Ses varsa oynat (aksiyon önerisi sesi)
+          if (data.audio_url) {
+            document.getElementById('demo-next-q').textContent = '📋 Aksiyon Önerisi: ' + (r.aksiyon_onerisi || '');
+            const player = document.getElementById('demo-audio-player');
+            player.src = data.audio_url;
+            player.style.display = 'block';
+            audioWrap.style.display = 'block';
+          }
+
+          // Ana dashboard'u da güncelle
+          activeReportData = r;
+          if (r.memnuniyet_skoru !== undefined)
+            document.getElementById('csat-number-val').innerHTML = `${parseFloat(r.memnuniyet_skoru).toFixed(1)} <span style="font-size:18px;color:#94a3b8;font-weight:400;">/ 10</span>`;
+          if (r.churn_nedeni)
+            document.getElementById('churn-item-name').textContent = `● ${r.churn_nedeni}`;
+          if (r.alinti) { const q = document.getElementById('quote-text-1'); if(q) q.innerHTML = `"${r.alinti}"`; }
+          renderVaultJson();
+          statusEl.textContent = '✅ Görüşme tamamlandı — rapor güncellendi!';
+        }
+
+      } catch (e) {
+        statusEl.textContent = '❌ Hata: ' + e.message;
+        emptyEl.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '🎤 Analiz Et & Seslendir';
+      }
+    }
   </script>
 
 </body>
 </html>
+<!-- DEMO TAB PANEL - injected after body close to avoid inline style conflicts -->

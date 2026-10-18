@@ -79,6 +79,58 @@ DEMO_TRANSCRIPTS = [
 _demo_cursor = 0
 
 
+@app.post("/api/analyze-and-speak")
+def analyze_and_speak():
+    """Transcript al -> Gemma analiz et -> in_progress ise ElevenLabs seslendir.
+
+    Donus:
+      { turn_type, next_question, audio_url (varsa), report (varsa) }
+    """
+    body = request.get_json(silent=True) or {}
+    transcript = (body.get("transcript") or "").strip()
+    if not transcript:
+        return jsonify({"error": "transcript bos"}), 400
+
+    try:
+        result = analyze_turn(transcript)
+    except Exception as e:
+        print(f"[analyze-and-speak] analyze_turn hatasi: {e}")
+        result = _mock_completed()
+
+    response = {
+        "turn_type": result.get("turn_type"),
+        "next_question": result.get("next_question"),
+        "report": result.get("report"),
+        "audio_url": None,
+    }
+
+    # in_progress ise soruyu seslendir
+    if result.get("turn_type") == "in_progress" and result.get("next_question"):
+        try:
+            filename = synthesize(result["next_question"])
+            response["audio_url"] = f"{request.url_root}audio/{filename}"
+        except Exception as e:
+            print(f"[analyze-and-speak] ElevenLabs hatasi: {e}")
+
+    # completed ise raporu kaydet ve aksiyon önerisini seslendir
+    if result.get("turn_type") == "completed" and result.get("report"):
+        REPORT_OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+        REPORT_OUT_PATH.write_text(
+            json.dumps(result["report"], ensure_ascii=False, indent=2), encoding="utf-8"
+        )
+        # Aksiyon önerisini ElevenLabs ile seslendir
+        aksiyon = result["report"].get("aksiyon_onerisi", "")
+        skor = result["report"].get("memnuniyet_skoru", "")
+        speak_text = f"Memnuniyet skoru {skor} üzerinden {skor}. {aksiyon}"
+        try:
+            filename = synthesize(speak_text)
+            response["audio_url"] = f"{request.url_root}audio/{filename}"
+        except Exception as e:
+            print(f"[analyze-and-speak] ElevenLabs completed ses hatasi: {e}")
+
+    return jsonify(response)
+
+
 @app.post("/api/simulate-call")
 def simulate_call():
     """Telefon olmadan gercek zinciri (Gemma analiz -> JSON rapor) calistirir.

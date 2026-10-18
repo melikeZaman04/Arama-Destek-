@@ -1,6 +1,6 @@
 {
-  "memnuniyet_skoru": 6.8,
-  "churn_nedeni": "Entegrasyon / API sorunlari",
-  "alinti": "Entegrasyon uc haftadir tamamlanmadi, ekibimiz manuel veri girisine geri dondu.",
-  "aksiyon_onerisi": "Kurumsal musteriler icin oncelikli entegrasyon SLA'si tanimlayin."
+  "memnuniyet_skoru": 2.0,
+  "churn_nedeni": "Entegrasyonun gecikmesi ve manuel veri girişine geri dönülmesi, müşteriyi memnuniyetsiz bırakmıştır.",
+  "alinti": "Entegrasyon uc haftadir tamamlanmadi, ekibimiz manuel veri girisine geri donduk.",
+  "aksiyon_onerisi": "Entegrasyon sürecini acilen yeniden hizlandirmak ve manuel veri giris sorununu cozmek gerekiyor."
 }
