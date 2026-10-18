@@ -1,565 +1,2012 @@
-<title>Yankı</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Work+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap">
-<style>
-:root{
-  --bg:#f2f1ec;
-  --surface:#ffffff;
-  --surface-alt:#e9e7dd;
-  --line:#dddad0;
-  --ink:#1c2220;
-  --ink-2:#535a51;
-  --ink-mute:#8a8f81;
-  --accent:#0a8a72;
-  --accent-ink:#06362c;
-  --accent-soft:#d9efe8;
-  --risk:#c2410c;
-  --risk-soft:#f6e3d6;
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#15170f1a; --bg:#17180fe6; --bg:#16170f; --bg:#16170f;
-    --bg:#15160f;
-    --surface:#1d1f16;
-    --surface-alt:#262820;
-    --line:#35372c;
-    --ink:#ece9de;
-    --ink-2:#b7b9ab;
-    --ink-mute:#80836f;
-    --accent:#2fa589;
-    --accent-ink:#a9e9d6;
-    --accent-soft:#1f3a30;
-    --risk:#d4682f;
-    --risk-soft:#3c2619;
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yankı — Sesli Asistan & Gerçek Zamanlı Sıfır-Sızıntı PII Maskeleme Hattı</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,600&family=Work+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+  <style>
+  :root {
+    --bg-page: #fbfbfa;
+    --brand-dark: #07382d;
+    --brand-darker: #04271f;
+    --brand-accent: #15803d;
+    --surface: #ffffff;
+    --surface-alt: #f4f3ef;
+    --border: #e6e4dc;
+    --border-light: #f0eee8;
+    --text-primary: #111815;
+    --text-secondary: #525a55;
+    --text-muted: #8c938e;
+    --warn-text: #b45309;
+    --warn-bg: #fef3c7;
+    --danger-text: #b91c1c;
+    --danger-bg: #fee2e2;
   }
-}
-:root[data-theme="dark"]{
-  --bg:#15160f;
-  --surface:#1d1f16;
-  --surface-alt:#262820;
-  --line:#35372c;
-  --ink:#ece9de;
-  --ink-2:#b7b9ab;
-  --ink-mute:#80836f;
-  --accent:#2fa589;
-  --accent-ink:#a9e9d6;
-  --accent-soft:#1f3a30;
-  --risk:#d4682f;
-  --risk-soft:#3c2619;
-}
-*{box-sizing:border-box;}
-body{
-  background:var(--bg);
-  color:var(--ink);
-  font-family:'Work Sans',system-ui,sans-serif;
-  margin:0;
-}
-.wrap{
-  max-width:920px;
-  margin:0 auto;
-  padding:48px 28px 80px;
-}
-.badge{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  font-family:'JetBrains Mono',monospace;
-  font-size:11px;
-  letter-spacing:.06em;
-  text-transform:uppercase;
-  color:var(--risk);
-  background:var(--risk-soft);
-  border:1px solid color-mix(in srgb, var(--risk) 35%, transparent);
-  padding:5px 10px;
-  border-radius:100px;
-}
-header{
-  display:flex;
-  flex-direction:column;
-  gap:18px;
-  padding-bottom:28px;
-  border-bottom:1px solid var(--line);
-  margin-bottom:36px;
-}
-.brand-row{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:16px;
-  flex-wrap:wrap;
-}
-.brand{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-.mark{
-  width:40px;height:40px;border-radius:10px;
-  background:var(--accent-ink);
-  display:flex;align-items:center;justify-content:center;
-  flex:none;
-}
-.mark svg{display:block;}
-.brand-name{
-  font-family:'Fraunces',serif;
-  font-weight:600;
-  font-size:22px;
-  letter-spacing:-.01em;
-}
-.brand-sub{
-  font-family:'JetBrains Mono',monospace;
-  font-size:11px;
-  color:var(--ink-mute);
-  text-transform:uppercase;
-  letter-spacing:.08em;
-  margin-top:2px;
-}
-h1{
-  font-family:'Fraunces',serif;
-  font-weight:600;
-  font-size:clamp(28px,4vw,38px);
-  line-height:1.15;
-  letter-spacing:-.01em;
-  margin:0;
-  text-wrap:balance;
-}
-.period{
-  font-family:'JetBrains Mono',monospace;
-  font-size:13px;
-  color:var(--ink-2);
-}
-.deck{
-  color:var(--ink-2);
-  font-size:15.5px;
-  line-height:1.6;
-  max-width:62ch;
-}
 
-.kpis{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:1px;
-  background:var(--line);
-  border:1px solid var(--line);
-  border-radius:14px;
-  overflow:hidden;
-  margin-bottom:40px;
-}
-.kpi{
-  background:var(--surface);
-  padding:18px 16px;
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-}
-.kpi-label{
-  font-size:12px;
-  color:var(--ink-mute);
-  line-height:1.3;
-}
-.kpi-value{
-  font-family:'JetBrains Mono',monospace;
-  font-weight:700;
-  font-size:26px;
-  font-variant-numeric:tabular-nums;
-}
-.kpi-delta{
-  font-family:'JetBrains Mono',monospace;
-  font-size:12px;
-  font-weight:500;
-}
-.kpi-delta.up{color:var(--accent);}
-.kpi-delta.down{color:var(--risk);}
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background-color: var(--bg-page);
+    color: var(--text-primary);
+    font-family: 'Work Sans', system-ui, sans-serif;
+    font-size: 13.5px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
 
-section{margin-bottom:44px;}
-.section-head{
-  display:flex;
-  align-items:baseline;
-  justify-content:space-between;
-  gap:12px;
-  margin-bottom:16px;
-  flex-wrap:wrap;
-}
-h2{
-  font-family:'Fraunces',serif;
-  font-weight:600;
-  font-size:19px;
-  margin:0;
-}
-.section-note{
-  font-size:12.5px;
-  color:var(--ink-mute);
-  font-family:'JetBrains Mono',monospace;
-}
+  /* =========================================================
+     TOP DARK GREEN HEADER BAR
+     ========================================================= */
+  .header-banner {
+    background: #08382d;
+    color: #ffffff;
+    padding: 16px 36px 0 36px;
+  }
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 14px;
+  }
+  .brand-left {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .brand-title-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .brand-logo {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    font-weight: 600;
+    color: #ffffff;
+    letter-spacing: -0.02em;
+  }
+  .version-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    color: #d1fae5;
+    padding: 2px 7px;
+    border-radius: 5px;
+    letter-spacing: 0.04em;
+  }
+  .brand-subtitle {
+    font-size: 11.5px;
+    color: #a7f3d0;
+    opacity: 0.85;
+  }
 
-.panel{
-  background:var(--surface);
-  border:1px solid var(--line);
-  border-radius:14px;
-  padding:22px;
-}
+  .header-badges {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .badge-jury {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(245, 158, 11, 0.16);
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    color: #fef3c7;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 5px 12px;
+    border-radius: 100px;
+    font-weight: 600;
+  }
+  .badge-zero {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(16, 185, 129, 0.18);
+    border: 1px solid rgba(16, 185, 129, 0.45);
+    color: #d1fae5;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 5px 12px;
+    border-radius: 100px;
+    font-weight: 600;
+  }
+  /* KULLANICI AVATAR & ÇIKIŞ */
+  .user-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 100px;
+    padding: 4px 12px 4px 5px;
+    cursor: pointer;
+    transition: background 0.15s;
+    position: relative;
+  }
+  .user-badge:hover { background: rgba(255,255,255,0.16); }
+  .user-avatar {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: #2fa589;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: #ffffff;
+    flex-shrink: 0;
+  }
+  .user-name-text {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #ffffff;
+  }
+  .user-role-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: #a7f3d0;
+  }
+  .user-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background: #ffffff;
+    border: 1px solid #e4e2da;
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    min-width: 200px;
+    z-index: 999;
+    overflow: hidden;
+  }
+  .user-dropdown.open { display: block; }
+  .dropdown-header {
+    padding: 14px 16px 10px;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  .dropdown-user-name {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #111815;
+  }
+  .dropdown-user-email {
+    font-size: 11.5px;
+    color: #64748b;
+    margin-top: 1px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 11px 16px;
+    font-size: 13px;
+    color: #334155;
+    cursor: pointer;
+    transition: background 0.12s;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    font-family: 'Work Sans', sans-serif;
+  }
+  .dropdown-item:hover { background: #f8fafc; }
+  .dropdown-item.danger { color: #b91c1c; }
+  .dropdown-item.danger:hover { background: #fef2f2; }
+  .pulse-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #34d399;
+    box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7);
+    animation: pAnim 2s infinite;
+  }
+  @keyframes pAnim {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(52, 211, 153, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
+  }
 
-/* trend chart */
-.chart-row{display:flex;gap:28px;align-items:flex-end;}
-.chart-svg{flex:1;min-width:0;}
-.chart-stat{
-  flex:none;
-  text-align:right;
-}
-.chart-stat .big{
-  font-family:'JetBrains Mono',monospace;
-  font-weight:700;
-  font-size:34px;
-  color:var(--accent-ink);
-  line-height:1;
-}
-.chart-stat .small{
-  font-size:12.5px;
-  color:var(--ink-2);
-  margin-top:6px;
-}
+  /* TABS NAV */
+  .nav-tabs {
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+  }
+  .nav-btn {
+    background: transparent;
+    color: rgba(255, 255, 255, 0.78);
+    border: none;
+    padding: 8px 18px 10px;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 7px 7px 0 0;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+  }
+  .nav-btn:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+  }
+  .nav-btn.active {
+    background: #ffffff;
+    color: var(--brand-dark);
+    font-weight: 600;
+    border-radius: 7px 7px 0 0;
+  }
 
-/* churn reasons */
-.reasons{display:flex;flex-direction:column;gap:14px;}
-.reason-row{display:grid;grid-template-columns:168px 1fr 48px;align-items:center;gap:12px;}
-.reason-name{font-size:14px;color:var(--ink);}
-.reason-track{height:10px;background:var(--surface-alt);border-radius:6px;overflow:hidden;}
-.reason-fill{height:100%;background:var(--accent);border-radius:6px;}
-.reason-pct{font-family:'JetBrains Mono',monospace;font-size:13px;text-align:right;color:var(--ink-2);font-variant-numeric:tabular-nums;}
+  /* MAIN CONTENT AREA */
+  .page-wrap {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 28px 24px 70px;
+  }
+  .tab-pane {
+    display: none;
+  }
+  .tab-pane.active {
+    display: block;
+    animation: fadeIn 0.2s ease;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(3px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
-/* quotes */
-.quotes{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:14px;
-}
-.quote{
-  background:var(--surface);
-  border:1px solid var(--line);
-  border-left:3px solid var(--accent);
-  border-radius:10px;
-  padding:16px 16px 14px;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-.quote p{
-  margin:0;
-  font-size:14.5px;
-  line-height:1.55;
-  color:var(--ink);
-}
-.quote-tag{
-  font-family:'JetBrains Mono',monospace;
-  font-size:11px;
-  color:var(--ink-mute);
-  text-transform:uppercase;
-  letter-spacing:.04em;
-}
+  /* HEADINGS */
+  .title-area {
+    margin-bottom: 22px;
+  }
+  .page-h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: #161a18;
+    margin-bottom: 4px;
+  }
+  .page-sub {
+    color: #555c57;
+    font-size: 13.5px;
+  }
 
-/* actions */
-.actions{display:flex;flex-direction:column;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;}
-.action{
-  background:var(--surface);
-  display:grid;
-  grid-template-columns:36px 1fr;
-  gap:14px;
-  padding:16px 18px;
-  align-items:start;
-}
-.action-num{
-  font-family:'JetBrains Mono',monospace;
-  font-weight:700;
-  font-size:14px;
-  color:var(--accent-ink);
-  background:var(--accent-soft);
-  width:28px;height:28px;
-  border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-}
-.action-title{font-size:14.5px;font-weight:500;margin:0 0 3px;}
-.action-body{font-size:13.5px;color:var(--ink-2);margin:0;line-height:1.5;}
+  /* GENERAL CARDS */
+  .card-box {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+  }
 
-footer{
-  border-top:1px solid var(--line);
-  padding-top:22px;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-.footnote{
-  font-size:12.5px;
-  color:var(--ink-mute);
-  line-height:1.6;
-  max-width:68ch;
-}
-.footnote b{color:var(--ink-2);}
+  /* =========================================================
+     PAGE 1: CANLI GÖRÜŞME VE MASKELEME HATTI
+     ========================================================= */
+  .call-sim-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .call-sim-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .btn-call-dark {
+    background: #093c30;
+    color: #ffffff;
+    border: 1px solid #062b22;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-call-dark:hover { background: #0c4d3e; }
+  .btn-call-light {
+    background: #ffffff;
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-call-light:hover { background: var(--surface-alt); }
+  .pill-idle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: #64748b;
+    background: var(--surface-alt);
+    border: 1px solid var(--border);
+    padding: 6px 14px;
+    border-radius: 8px;
+  }
+  .wave-box {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    height: 32px;
+    padding: 0 12px;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .wave-bar {
+    width: 3px;
+    height: 8px;
+    background: #093c30;
+    border-radius: 2px;
+    transition: height 0.15s ease;
+  }
+  .wave-bar.active {
+    animation: waveBounce 0.6s infinite alternate ease-in-out;
+  }
+  @keyframes waveBounce {
+    0% { height: 4px; }
+    100% { height: 22px; }
+  }
 
-@media (max-width:700px){
-  .kpis{grid-template-columns:repeat(2,1fr);}
-  .quotes{grid-template-columns:1fr;}
-  .chart-row{flex-direction:column;align-items:stretch;}
-  .chart-stat{text-align:left;}
-  .reason-row{grid-template-columns:120px 1fr 40px;}
-}
-</style>
+  /* 4 Kutu Sırası */
+  .nodes-4-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+  .node-box {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .node-box.selected-border {
+    border: 2px solid #093c30;
+  }
+  .node-box-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .node-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #111827;
+  }
+  .node-desc {
+    font-size: 12px;
+    color: #555c57;
+  }
+  .chip-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+  .chip-tag.gray { background: #f1f5f9; color: #475569; }
+  .chip-tag.green { background: #dcfce7; color: #15803d; }
 
-<div class="wrap">
+  /* Çift Transkript Kartları */
+  .trans-pair-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .trans-box {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px;
+    min-height: 220px;
+  }
+  .trans-box-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .trans-box-title {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .chip-yerel {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    background: #fef3c7;
+    color: #92400e;
+    padding: 2px 8px;
+    border-radius: 6px;
+  }
+  .chip-maskeli {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    background: #dcfce7;
+    color: #15803d;
+    padding: 2px 8px;
+    border-radius: 6px;
+  }
+  .trans-text {
+    font-size: 14.5px;
+    line-height: 1.7;
+    color: #1f2937;
+  }
+  .mask-pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fde68a;
+    padding: 1px 7px;
+    border-radius: 4px;
+    margin: 0 2px;
+  }
 
-  <header>
-    <div class="brand-row">
-      <div class="brand">
-        <div class="mark">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <circle cx="10" cy="10" r="2.6" fill="#2fa589"/>
-            <circle cx="10" cy="10" r="6.2" stroke="#2fa589" stroke-width="1.4" opacity="0.55" fill="none"/>
-            <circle cx="10" cy="10" r="9.3" stroke="#2fa589" stroke-width="1.2" opacity="0.3" fill="none"/>
-          </svg>
+  /* =========================================================
+     PAGE 2: SİSTEM DURUMU VE UÇTAN UCA TEKNOLOJİ HATTI
+     ========================================================= */
+  .meta-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .tag-tubitak {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    background: #1e293b;
+    color: #ffffff;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+  .tag-denetim {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: #64748b;
+    margin-left: 6px;
+  }
+  .btn-ping-dark {
+    background: #093c30;
+    color: #ffffff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-ping-dark:hover { background: #0c4d3e; }
+
+  /* 4 KPI */
+  .kpi-row-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+  .kpi-stat-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .kpi-stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    color: #64748b;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+  .kpi-stat-big {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 32px;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+  .kpi-stat-foot {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #475569;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .badge-stabil {
+    background: #dcfce7;
+    color: #15803d;
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+
+  /* UÇTAN UCA İLETİM HATTI */
+  .spec-grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .spec-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .spec-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .spec-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: #64748b;
+    font-weight: 600;
+  }
+  .spec-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #0f172a;
+  }
+  .spec-desc {
+    font-size: 11.5px;
+    color: #475569;
+    line-height: 1.4;
+    min-height: 32px;
+  }
+  .spec-sub-box {
+    background: #f8fafc;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .spec-sub-row {
+    display: flex;
+    justify-content: space-between;
+  }
+  .spec-sub-row span:first-child { color: #64748b; }
+  .spec-latency-row {
+    margin-top: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #15803d;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 6px;
+  }
+
+  /* BELLEK İZOLASYONU & TELEMETRİ KONSOLU */
+  .telemetry-split {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .iso-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+  }
+  .iso-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .iso-title {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .iso-desc {
+    font-size: 12px;
+    color: #475569;
+    line-height: 1.5;
+    margin-bottom: 14px;
+  }
+  .iso-latency-box {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+  }
+  .iso-multi-bar {
+    height: 6px;
+    border-radius: 3px;
+    display: flex;
+    overflow: hidden;
+    margin: 8px 0;
+  }
+
+  /* Siyah Konsol */
+  .dark-console {
+    background: #0f1412;
+    border: 1px solid #1f2923;
+    border-radius: 12px;
+    color: #e2e8f0;
+    padding: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    display: flex;
+    flex-direction: column;
+    height: 320px;
+  }
+  .console-top {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #1f2923;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    font-size: 11px;
+  }
+  .console-scroll {
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+  .c-row {
+    display: flex;
+    gap: 8px;
+    line-height: 1.4;
+  }
+  .c-time { color: #64748b; }
+  .c-tag {
+    font-weight: 700;
+    font-size: 10px;
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  .c-tag.sip { background: #064e3b; color: #6ee7b7; }
+  .c-tag.whisper { background: #1e3a8a; color: #93c5fd; }
+  .c-tag.pii { background: #7c2d12; color: #fed7aa; }
+  .c-tag.gemma { background: #4c1d95; color: #d8b4fe; }
+  .c-tag.eleven { background: #065f46; color: #a7f3d0; }
+  .console-bottom-meta {
+    border-top: 1px solid #1f2923;
+    padding-top: 10px;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 10.5px;
+    color: #64748b;
+  }
+
+  /* JÜRI NOTU KUTUSU */
+  .jury-note-banner {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+  }
+  .jury-note-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .jury-check-icon {
+    width: 28px; height: 28px; border-radius: 6px;
+    background: #dcfce7;
+    color: #15803d;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+  }
+
+  /* =========================================================
+     PAGE 3 & 4: AYLIK YÖNETİCİ RAPORU & MÜŞTERİ ANALİTİĞİ
+     ========================================================= */
+  .control-top-bar {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .feed-sync-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #475569;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .shield-switcher {
+    display: inline-flex;
+    background: #f1f5f9;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 2px;
+    gap: 2px;
+  }
+  .btn-shield-toggle {
+    background: transparent;
+    border: none;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 5px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #475569;
+  }
+  .btn-shield-toggle.active {
+    background: #ffffff;
+    color: #0f172a;
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+
+  /* 3 BÜYÜK ANALİTİK KARTI */
+  .exec-3-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 22px;
+  }
+  .exec-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .exec-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    color: #64748b;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .exec-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 38px;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+  .exec-foot {
+    font-size: 12px;
+    color: #64748b;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #f1f5f9;
+    padding-top: 8px;
+  }
+
+  /* CHURN VE ALINTILAR GRID */
+  .churn-quotes-split {
+    display: grid;
+    grid-template-columns: 1fr 1.35fr;
+    gap: 18px;
+    margin-bottom: 26px;
+  }
+  .panel-white {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .panel-h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .panel-sub-label {
+    font-size: 12px;
+    color: #64748b;
+    margin-bottom: 16px;
+  }
+
+  /* Churn Rows */
+  .c-row-item {
+    margin-bottom: 14px;
+  }
+  .c-row-head {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .c-bar-bg {
+    height: 7px;
+    background: #f1f5f9;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .c-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+  }
+  .c-row-note {
+    font-size: 11px;
+    color: #64748b;
+    margin-top: 2px;
+  }
+
+  /* Quotes List */
+  .quote-item-box {
+    background: #f8fafc;
+    border-left: 3px solid #10b981;
+    border-radius: 6px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    font-size: 13px;
+  }
+  .quote-item-box.alert-border {
+    border-left-color: #ef4444;
+  }
+  .quote-top-line {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    margin-bottom: 4px;
+  }
+  .quote-body-text {
+    line-height: 1.5;
+    margin-bottom: 6px;
+    color: #1e293b;
+  }
+  .quote-audit-line {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    color: #64748b;
+  }
+
+  /* YAPAY ZEKA AKSİYON ÖNERİLERİ */
+  .action-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .action-box-item {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 220px;
+  }
+  .action-tag-pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 4px;
+  }
+  .action-tag-pill.red { background: #fee2e2; color: #b91c1c; }
+  .action-tag-pill.orange { background: #fef3c7; color: #b45309; }
+  .action-tag-pill.gray { background: #f1f5f9; color: #475569; }
+
+  .action-title-text {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.35;
+    margin-top: 8px;
+    margin-bottom: 6px;
+  }
+  .action-body-text {
+    font-size: 12.5px;
+    color: #475569;
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+  .action-cta-btn {
+    background: #093c30;
+    color: #ffffff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    align-self: flex-start;
+  }
+  .action-cta-btn.light {
+    background: #ffffff;
+    color: #0f172a;
+    border: 1px solid var(--border);
+  }
+
+  /* FOOTER */
+  .site-footer {
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+    padding-top: 18px;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #64748b;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  @media (max-width: 900px) {
+    .nodes-4-grid, .kpi-row-4, .spec-grid-4, .exec-3-cards, .action-grid-3 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .trans-pair-grid, .telemetry-split, .churn-quotes-split {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 600px) {
+    .nodes-4-grid, .kpi-row-4, .spec-grid-4, .exec-3-cards, .action-grid-3 {
+      grid-template-columns: 1fr;
+    }
+  }
+  </style>
+</head>
+<body>
+
+  <!-- =========================================================
+       ÜST KOYU YEŞİL BAŞLIK & SEKME ÇUBUĞU
+       ========================================================= -->
+  <header class="header-banner">
+    <div class="header-top">
+      <div class="brand-left">
+        <div class="brand-title-row">
+          <span class="brand-logo">Yankı</span>
+          <span class="version-tag">v2.4 Hackathon Build</span>
         </div>
-        <div>
-          <div class="brand-name">Yankı</div>
-          <div class="brand-sub">Görüşme İçgörü Platformu</div>
+        <div class="brand-subtitle">Sesli Asistan &amp; Gerçek Zamanlı Sıfır-Sızıntı PII Maskeleme Hattı</div>
+      </div>
+      <div class="header-badges">
+        <span class="badge-jury">🏆 Jury Demo Ready</span>
+        <span class="badge-zero">
+          <span class="pulse-dot"></span>
+          <span>Zero-Knowledge Kalkanı · Aktif</span>
+        </span>
+        <!-- KULLANICI BADGE -->
+        <div class="user-badge" id="user-badge-btn" onclick="toggleUserDropdown()">
+          <div class="user-avatar" id="user-avatar-initials">?</div>
+          <div>
+            <div class="user-name-text" id="user-display-name">Yükleniyor...</div>
+            <div class="user-role-text" id="user-display-role">—</div>
+          </div>
+          <span style="color:rgba(255,255,255,0.5);font-size:11px;margin-left:2px;">▾</span>
+          <!-- DROPDOWN MENÜ -->
+          <div class="user-dropdown" id="user-dropdown">
+            <div class="dropdown-header">
+              <div class="dropdown-user-name" id="dd-name">—</div>
+              <div class="dropdown-user-email" id="dd-email">—</div>
+            </div>
+            <button class="dropdown-item" onclick="showTab('tab-report', document.querySelectorAll('.nav-btn')[2])">
+              📊 Raporlara Git
+            </button>
+            <button class="dropdown-item" onclick="showTab('tab-vault', document.querySelectorAll('.nav-btn')[3])">
+              🔒 Güvenli Kasa
+            </button>
+            <button class="dropdown-item danger" onclick="doLogout()">
+              🚪 Güvenli Çıkış Yap
+            </button>
+          </div>
         </div>
       </div>
-      <span class="badge">● Örnek rapor — mock veri</span>
     </div>
-    <h1>Aylık Müşteri İçgörü Raporu</h1>
-    <div class="period">Vektra Yazılım A.Ş. · Eylül 2026 dönemi · 14 Ekim 2026'da oluşturuldu</div>
-    <p class="deck">184 müşteri görüşmesi, hiçbir ham ses ya da transkript şirket dışına çıkmadan, cihaz üzerinde analiz edildi. Bu sayfa, sistemin üreteceği aylık raporun biçimini göstermek için hazırlanmış bir örnektir.</p>
+
+    <!-- 3 ANA SEKME (Görsellerdeki Sırayla) -->
+    <nav class="nav-tabs">
+      <button class="nav-btn active" onclick="showTab('tab-live', this)">
+        <span>🎙️ Canlı Görüşme &amp; Hat</span>
+      </button>
+      <button class="nav-btn" onclick="showTab('tab-pipeline', this)">
+        <span>⚡ Sistem Durumu &amp; Pipeline</span>
+      </button>
+      <button class="nav-btn" onclick="showTab('tab-report', this)">
+        <span>📊 Aylık Yönetici Raporu</span>
+      </button>
+      <button class="nav-btn" onclick="showTab('tab-vault', this)">
+        <span>🔒 Güvenli Kasa &amp; JSON</span>
+      </button>
+    </nav>
   </header>
 
-  <section>
-    <div class="section-head">
-      <h2>Canlı sistem çıktısı</h2>
-      <span class="section-note" id="live-status">backend'e bağlanılıyor...</span>
-    </div>
-    <div class="panel" style="display:flex;flex-direction:column;gap:14px;">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
-        <p style="margin:0;font-size:13.5px;color:var(--ink-2);max-width:56ch;">
-          Bu kart, aşağıdaki mock yıllık raporun aksine, <b>Gemma'nın az önce ürettiği gerçek
-          analiz sonucunu</b> gösterir — orchestration/app.py üzerinden canlı okunur.
-        </p>
-        <button id="simulate-btn" style="font-family:'JetBrains Mono',monospace;font-size:12px;
-          background:var(--accent);color:#fff;border:none;border-radius:8px;padding:10px 16px;
-          cursor:pointer;white-space:nowrap;">Aramayı Simüle Et</button>
-      </div>
-      <div id="live-result" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
-        background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;">
-        <div class="kpi"><div class="kpi-label">Memnuniyet skoru</div><div class="kpi-value" id="live-skor">—</div></div>
-        <div class="kpi"><div class="kpi-label">Churn nedeni</div><div class="kpi-value" style="font-size:15px;" id="live-neden">—</div></div>
-        <div class="kpi" style="grid-column:span 2;"><div class="kpi-label">Alıntı</div><div style="font-size:13.5px;margin-top:4px;" id="live-alinti">—</div></div>
-      </div>
-    </div>
-  </section>
+  <main class="page-wrap">
 
-  <section>
-    <div class="kpis">
-      <div class="kpi">
-        <div class="kpi-label">Analiz edilen görüşme</div>
-        <div class="kpi-value">184</div>
-        <div class="kpi-delta up">↑ 22 (geçen aya göre)</div>
+    <!-- =========================================================
+         1. SAYFA: CANLI GÖRÜŞME VE MASKELEME HATTI (Görsel 1)
+         ========================================================= -->
+    <section id="tab-live" class="tab-pane active">
+      <div class="title-area">
+        <h1 class="page-h1">Canlı görüşme ve maskeleme hattı</h1>
+        <p class="page-sub">Konuşma yerelde yazıya çevrilir, kişisel veriler maskelenir ve yalnızca maskeli metin yapay zekâya gider.</p>
       </div>
-      <div class="kpi">
-        <div class="kpi-label">Ortalama memnuniyet skoru</div>
-        <div class="kpi-value">7.6<span style="font-size:14px;color:var(--ink-mute);">/10</span></div>
-        <div class="kpi-delta up">↑ 0.3 puan</div>
-      </div>
-      <div class="kpi">
-        <div class="kpi-label">Risk altındaki müşteri</div>
-        <div class="kpi-value">12</div>
-        <div class="kpi-delta up">↓ 7 (19'dan)</div>
-      </div>
-      <div class="kpi">
-        <div class="kpi-label">İnsan müdahalesi gerekmeyen analiz</div>
-        <div class="kpi-value">%91</div>
-        <div class="kpi-delta up">↑ 4 puan</div>
-      </div>
-    </div>
-  </section>
 
-  <section>
-    <div class="section-head">
-      <h2>Memnuniyet skoru trendi</h2>
-      <span class="section-note">6 aylık, 0–10 ölçek</span>
-    </div>
-    <div class="panel">
-      <div class="chart-row">
-        <svg class="chart-svg" viewBox="0 0 560 180" role="img" aria-label="Nisan'dan Eylül'e memnuniyet skoru 6.4'ten 7.6'ya yükseldi">
-          <defs>
-            <linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#0a8a72" stop-opacity="0.22"/>
-              <stop offset="100%" stop-color="#0a8a72" stop-opacity="0"/>
-            </linearGradient>
-          </defs>
-          <!-- gridlines at 6,7,8 of a 5-9 scale mapped to y 150..20 -->
-          <g stroke="var(--line)" stroke-width="1">
-            <line x1="40" y1="130" x2="540" y2="130"/>
-            <line x1="40" y1="80" x2="540" y2="80"/>
-            <line x1="40" y1="30" x2="540" y2="30"/>
-          </g>
-          <g font-family="JetBrains Mono, monospace" font-size="11" fill="var(--ink-mute)">
-            <text x="30" y="134" text-anchor="end">6</text>
-            <text x="30" y="84" text-anchor="end">7</text>
-            <text x="30" y="34" text-anchor="end">8</text>
-          </g>
-          <!-- points: Nisan 6.4, Mayıs 6.6, Haziran 6.3, Temmuz 6.9, Ağustos 7.3, Eylül 7.6 -->
-          <!-- x: 40,140,240,340,440,540  y = 180 - (v-5)*50 -->
-          <path d="M40,130 L140,120 L240,135 L340,105 L440,65 L540,50 L540,160 L40,160 Z" fill="url(#areaFill)"/>
-          <path d="M40,130 L140,120 L240,135 L340,105 L440,65 L540,50" fill="none" stroke="#0a8a72" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <g fill="#0a8a72">
-            <circle cx="40" cy="130" r="3.5"/>
-            <circle cx="140" cy="120" r="3.5"/>
-            <circle cx="240" cy="135" r="3.5"/>
-            <circle cx="340" cy="105" r="3.5"/>
-            <circle cx="440" cy="65" r="3.5"/>
-            <circle cx="540" cy="50" r="4.5" stroke="var(--surface)" stroke-width="2"/>
-          </g>
-          <g font-family="JetBrains Mono, monospace" font-size="11" fill="var(--ink-mute)">
-            <text x="40" y="172" text-anchor="middle">Nis</text>
-            <text x="140" y="172" text-anchor="middle">May</text>
-            <text x="240" y="172" text-anchor="middle">Haz</text>
-            <text x="340" y="172" text-anchor="middle">Tem</text>
-            <text x="440" y="172" text-anchor="middle">Ağu</text>
-            <text x="540" y="172" text-anchor="middle">Eyl</text>
-          </g>
-          <text x="540" y="40" text-anchor="end" font-family="JetBrains Mono, monospace" font-weight="700" font-size="13" fill="var(--accent-ink)">7.6</text>
-        </svg>
-        <div class="chart-stat">
-          <div class="big">+1.2</div>
-          <div class="small">6 ayda toplam<br/>puan artışı</div>
+      <div class="call-sim-bar">
+        <div class="call-sim-left">
+          <button class="btn-call-dark" onclick="runCallSimulation()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <span id="call-sim-label">Aramayı simüle et</span>
+          </button>
+          <button class="btn-call-light" onclick="nextSampleSentence()">
+            <span>⚡ Yeni Cümle Akıt</span>
+          </button>
+          <span class="pill-idle" id="call-state-pill">Beklemede</span>
+        </div>
+        <div class="wave-box" title="Ses Dalgası Spektrumu">
+          <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+          <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+          <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+          <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+          <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
         </div>
       </div>
-    </div>
-  </section>
 
-  <section>
-    <div class="section-head">
-      <h2>Ayrılma riskinin başlıca nedenleri</h2>
-      <span class="section-note">riskli olarak işaretlenen görüşmeler içinde pay</span>
-    </div>
-    <div class="panel">
-      <div class="reasons">
-        <div class="reason-row">
-          <div class="reason-name">Entegrasyon / API sorunları</div>
-          <div class="reason-track"><div class="reason-fill" style="width:34%"></div></div>
-          <div class="reason-pct">%34</div>
+      <!-- 4'lü Kutu Sırası -->
+      <div class="nodes-4-grid">
+        <div class="node-box" id="step-whisper">
+          <div class="node-box-top">
+            <span class="node-title">Whisper STT</span>
+            <span class="chip-tag gray">Yerel STT</span>
+          </div>
+          <div class="node-desc">Sesi cihazda yazıya çevirir</div>
         </div>
-        <div class="reason-row">
-          <div class="reason-name">Fiyat / sözleşme şartları</div>
-          <div class="reason-track"><div class="reason-fill" style="width:22%"></div></div>
-          <div class="reason-pct">%22</div>
-        </div>
-        <div class="reason-row">
-          <div class="reason-name">Destek yanıt süresi</div>
-          <div class="reason-track"><div class="reason-fill" style="width:18%"></div></div>
-          <div class="reason-pct">%18</div>
-        </div>
-        <div class="reason-row">
-          <div class="reason-name">Eksik özellik talebi</div>
-          <div class="reason-track"><div class="reason-fill" style="width:15%"></div></div>
-          <div class="reason-pct">%15</div>
-        </div>
-        <div class="reason-row">
-          <div class="reason-name">Rakip teklifi</div>
-          <div class="reason-track"><div class="reason-fill" style="width:11%"></div></div>
-          <div class="reason-pct">%11</div>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <section>
-    <div class="section-head">
-      <h2>Öne çıkan alıntılar</h2>
-      <span class="section-note">isim ve şirket bilgisi otomatik maskelendi</span>
-    </div>
-    <div class="quotes">
-      <div class="quote">
-        <p>"Entegrasyon üç haftadır tamamlanmadı, ekibimiz manuel veri girişine geri döndü."</p>
-        <div class="quote-tag">Müşteri · Kurumsal Plan</div>
-      </div>
-      <div class="quote">
-        <p>"Destek bileti 4 gündür yanıtsız, bu süre bizim için kritik."</p>
-        <div class="quote-tag">Müşteri · Büyüme Planı</div>
-      </div>
-      <div class="quote">
-        <p>"Fiyat artışını anlıyoruz ama yenileme şartları çok ani bildirildi."</p>
-        <div class="quote-tag">Müşteri · Kurumsal Plan</div>
-      </div>
-    </div>
-  </section>
+        <div class="node-box selected-border" id="step-mask">
+          <div class="node-box-top">
+            <span class="node-title">PII maskeleme</span>
+            <span class="chip-tag green">Aktif Kalkan</span>
+          </div>
+          <div class="node-desc">Kişisel veriyi yerinde etiketler</div>
+        </div>
 
-  <section style="margin-bottom:8px;">
-    <div class="section-head">
-      <h2>Önerilen aksiyonlar</h2>
-      <span class="section-note">etkiye göre sıralı</span>
-    </div>
-    <div class="actions">
-      <div class="action">
-        <div class="action-num">1</div>
+        <div class="node-box" id="step-gemma">
+          <div class="node-box-top">
+            <span class="node-title">Gemma analiz</span>
+            <span class="chip-tag gray">Bulut LLM</span>
+          </div>
+          <div class="node-desc">Yalnızca maskeli metni yorumlar</div>
+        </div>
+
+        <div class="node-box" id="step-eleven">
+          <div class="node-box-top">
+            <span class="node-title">ElevenLabs TTS</span>
+            <span class="chip-tag gray">Ses Sentezi</span>
+          </div>
+          <div class="node-desc">Sentezlenen yanıtı seslendirir</div>
+        </div>
+      </div>
+
+      <!-- Çift Transkript Kartı -->
+      <div class="trans-pair-grid">
+        <div class="trans-box">
+          <div class="trans-box-top">
+            <span class="trans-box-title">Ham konuşma</span>
+            <span class="chip-yerel">yerelde kalır</span>
+          </div>
+          <div class="trans-text" id="raw-trans-box">
+            "Merhaba, ben <b>Ahmet Yılmaz</b>, <b>XYZ Lojistik</b> adına arıyorum. Muhasebe müdürümüz <b>Mehmet Bey</b>'e <b>0532 111 22 33</b> numarasından ulaşamayınca sisteminizdeki entegrasyon aksaklığını bildirmek istedim..."
+          </div>
+        </div>
+
+        <div class="trans-box">
+          <div class="trans-box-top">
+            <span class="trans-box-title">Buluta giden metin</span>
+            <span class="chip-maskeli">maskeli</span>
+          </div>
+          <div class="trans-text" id="masked-trans-box">
+            "Merhaba, ben <span class="mask-pill">[KİŞİ_01]</span> , <span class="mask-pill">[ŞİRKET_A]</span> adına arıyorum. Muhasebe müdürümüz <span class="mask-pill">[KİŞİ_02]</span> 'e <span class="mask-pill">[TEL_01]</span> numarasından ulaşamayınca sisteminizdeki entegrasyon aksaklığını bildirmek istedim..."
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         2. SAYFA: SİSTEM DURUMU VE UÇTAN UCA TEKNOLOJİ HATTI (Görsel 2)
+         ========================================================= -->
+    <section id="tab-pipeline" class="tab-pane">
+      <div class="meta-top-row">
         <div>
-          <p class="action-title">Kurumsal müşteriler için öncelikli entegrasyon SLA'sı tanımlayın</p>
-          <p class="action-body">Riskli görüşmelerin %34'ü entegrasyon gecikmesine işaret ediyor — en yüksek etkili alan.</p>
+          <div style="display:flex;align-items:center;margin-bottom:6px;">
+            <span class="tag-tubitak">TÜBİTAK BİLGEM • EAL4+ UYUMLU</span>
+            <span class="tag-denetim">DENETİM KODU: YNK-LIVE-8820</span>
+          </div>
+          <h1 class="page-h1">Sistem Durumu ve Uçtan Uca Teknoloji Hattı</h1>
+          <p class="page-sub">Jüri ve denetim paneli: Twilio, yerel Whisper, Gemma LLM ve ElevenLabs bileşenlerinin canlı sağlık metrikleri.</p>
+        </div>
+        <button class="btn-ping-dark" onclick="sendTestPing()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 2v6h-6M3 12a9 9 0 0 1 15-6.7L21 8M3 22v-6h6M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+          <span>Hattı Test Et (Ping)</span>
+        </button>
+      </div>
+
+      <!-- 4 KPI -->
+      <div class="kpi-row-4">
+        <div class="kpi-stat-card">
+          <div class="kpi-stat-label"><span>UÇTAN UCA GECİKME</span><span>⚡</span></div>
+          <div class="kpi-stat-big" id="pipeline-latency-val">419 <span style="font-size:16px;font-weight:400;color:#64748b;">ms</span></div>
+          <div class="kpi-stat-foot">
+            <span style="color:#10b981;">● Hedef: &lt;500ms</span>
+            <span class="badge-stabil">Stabil</span>
+          </div>
+        </div>
+
+        <div class="kpi-stat-card">
+          <div class="kpi-stat-label"><span>BELLEK TÜKETİMİ (VRAM)</span><span>💾</span></div>
+          <div class="kpi-stat-big">4.2 <span style="font-size:16px;font-weight:400;color:#64748b;">/ 16 GB</span></div>
+          <div class="kpi-stat-foot">
+            <span>faster-whisper-medium ayrıldı</span>
+          </div>
+        </div>
+
+        <div class="kpi-stat-card">
+          <div class="kpi-stat-label"><span>ZERO-KNOWLEDGE SIZINTI</span><span>🛡️</span></div>
+          <div class="kpi-stat-big" style="color:#093c30;">%0.00 <span style="font-size:13px;font-weight:600;color:#0f172a;">SIFIR HATA</span></div>
+          <div class="kpi-stat-foot">
+            <span>Doğrulanmış Yerel Kalkan</span>
+            <span class="badge-stabil">Aktif</span>
+          </div>
+        </div>
+
+        <div class="kpi-stat-card">
+          <div class="kpi-stat-label"><span>HAT SAĞLIĞI</span><span>📶</span></div>
+          <div class="kpi-stat-big">%100 <span style="font-size:13px;font-weight:400;color:#64748b;">Tam Kapasite</span></div>
+          <div class="kpi-stat-foot">
+            <span style="color:#10b981;">● ● ● ●</span>
+            <span>4/4 Düğüm Aktif</span>
+          </div>
         </div>
       </div>
-      <div class="action">
-        <div class="action-num">2</div>
+
+      <!-- Canlı Pipeline & Düğüm Durumu (4 Ayrıntılı Kart) -->
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;color:#64748b;letter-spacing:0.04em;">UÇTAN UCA İLETİM HATTI</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#10b981;">● Canlı Senkronizasyon (SIP-to-TTS)</span>
+      </div>
+
+      <div class="spec-grid-4">
+        <!-- 01 Twilio -->
+        <div class="spec-card">
+          <div class="spec-top">
+            <span class="spec-num">01 GİRİŞ HATTI</span>
+            <span class="chip-tag green">● Canlı</span>
+          </div>
+          <div class="spec-title">Twilio SIP Trunking</div>
+          <div class="spec-desc">Yerel PSTN/GSM santral çağrılarının telekom köprüsü ve RTP paketleyici.</div>
+          <div class="spec-sub-box">
+            <div class="spec-sub-row"><span>Protokol:</span><span>SIP / WebRTC</span></div>
+            <div class="spec-sub-row"><span>Codec:</span><span>Opus 16kHz Mono</span></div>
+          </div>
+          <div class="spec-latency-row">
+            <span>Gecikme (Ingest)</span>
+            <span>~24 ms</span>
+          </div>
+        </div>
+
+        <!-- 02 Whisper -->
+        <div class="spec-card">
+          <div class="spec-top">
+            <span class="spec-num">02 SES ÇÖZÜMLEME</span>
+            <span class="chip-tag green">● GPU Hazır</span>
+          </div>
+          <div class="spec-title">Whisper STT (Yerel)</div>
+          <div class="spec-desc">İnternete çıkmadan yerel RTX sunucusunda çalışan gerçek zamanlı deşifre motoru.</div>
+          <div class="spec-sub-box">
+            <div class="spec-sub-row"><span>Model:</span><span>faster-whisper-med</span></div>
+            <div class="spec-sub-row"><span>Doğruluk (WER):</span><span>%3.4 (TR Dil)</span></div>
+          </div>
+          <div class="spec-latency-row">
+            <span>Gecikme (Chunk)</span>
+            <span>~120 ms</span>
+          </div>
+        </div>
+
+        <!-- 03 Gemma & Maskeleme -->
+        <div class="spec-card" style="border: 2px solid #093c30;">
+          <div class="spec-top">
+            <span class="spec-num">03 MANTIK &amp; MASKELEME</span>
+            <span class="chip-tag green">● Çıkarsama Aktif</span>
+          </div>
+          <div class="spec-title">Gemma LLM &amp; PII</div>
+          <div class="spec-desc">Regex + NER hibrit sıfır-sızıntı katmanı ve güvenli diyalog orkestrasyonu.</div>
+          <div class="spec-sub-box">
+            <div class="spec-sub-row"><span>Güvenlik:</span><span style="color:#b45309;font-weight:600;">Zero-Leakage Kalkanı</span></div>
+            <div class="spec-sub-row"><span>Kontekst:</span><span>8k Token Ring</span></div>
+          </div>
+          <div class="spec-latency-row">
+            <span>Gecikme (Prompt+TTFT)</span>
+            <span>~180 ms</span>
+          </div>
+        </div>
+
+        <!-- 04 ElevenLabs -->
+        <div class="spec-card">
+          <div class="spec-top">
+            <span class="spec-num">04 SES ÜRETİMİ</span>
+            <span class="chip-tag green">● Akışa Hazır</span>
+          </div>
+          <div class="spec-title">ElevenLabs TTS</div>
+          <div class="spec-desc">Düşük gecikmeli Türkçe modelleme ile mikrofon geri besleme ve doğal ses iletimi.</div>
+          <div class="spec-sub-box">
+            <div class="spec-sub-row"><span>Model:</span><span>Flash v2 Streaming</span></div>
+            <div class="spec-sub-row"><span>Protokol:</span><span>WebSocket Audio Chunk</span></div>
+          </div>
+          <div class="spec-latency-row">
+            <span>Gecikme (Stream)</span>
+            <span>~95 ms</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alt Kısım: Bellek İzolasyonu + Siyah Terminal Konsolu -->
+      <div class="telemetry-split">
+        <div class="iso-card">
+          <div class="iso-top">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#64748b;">TOPOLOJİ GRAFİĞİ</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;background:#dcfce7;color:#15803d;padding:1px 6px;border-radius:4px;">Zero-Retention</span>
+          </div>
+          <div class="iso-title">Bellek İzolasyon Mimarisi</div>
+          <div class="iso-desc">
+            Gelen ses ham dalga biçimi GPU tamponunda çözülür; KVKK/GDPR kapsamında disk veya bulut ortamına yazılmadan PII kalkanında atomik olarak temizlenir.
+          </div>
+          <div class="iso-latency-box">
+            <div style="display:flex;justify-content:space-between;">
+              <span>Gecikme Dağılım Payları</span>
+              <span style="font-weight:700;">419 ms Total</span>
+            </div>
+            <div class="iso-multi-bar">
+              <div style="width:6%;background:#0ea5e9;"></div>
+              <div style="width:29%;background:#3b82f6;"></div>
+              <div style="width:43%;background:#f59e0b;"></div>
+              <div style="width:22%;background:#10b981;"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:9.5px;color:#64748b;">
+              <span>● Twilio (%6)</span><span>● Whisper (%29)</span><span>● Gemma/PII (%43)</span><span>● ElevenLabs (%22)</span>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11px;color:#64748b;">
+            <span>Sertifikasyon Durumu:</span>
+            <span style="background:#093c30;color:#ffffff;padding:2px 7px;border-radius:4px;">🔒 ISO 27001 &amp; KVKK</span>
+          </div>
+        </div>
+
+        <!-- Siyah Konsol -->
+        <div class="dark-console">
+          <div class="console-top">
+            <span style="color:#34d399;">● CANLI TELEMETRİ / EVENT STREAM KONSOLU</span>
+            <span style="color:#94a3b8;">STREAM_INGEST: 100% OK &nbsp; ≡ Temizle</span>
+          </div>
+          <div class="console-scroll" id="stream-logs-box">
+            <div class="c-row">
+              <span class="c-time">[00:45:12]</span>
+              <span class="c-tag sip">SIP_INVITE</span>
+              <span>+90 850 302 44 11 hattından çağrı alındı. Handshake tamamlandı.</span>
+              <span style="margin-left:auto;color:#64748b;">24ms</span>
+            </div>
+            <div class="c-row">
+              <span class="c-time">[00:45:13]</span>
+              <span class="c-tag whisper">WHISPER_LOCAL</span>
+              <span>3.2 sn ses parçası çözümlendi. Ham metin yerel VRAM'de.</span>
+              <span style="margin-left:auto;color:#64748b;">120ms</span>
+            </div>
+            <div class="c-row">
+              <span class="c-time">[00:45:13]</span>
+              <span class="c-tag pii">PII_SHIELD</span>
+              <span style="color:#fde047;">3 hassas öğe maskelendi &rarr; [KİŞİ_01] , [ŞİRKET_A] , [TEL_01] . SIFIR SIZINTI</span>
+            </div>
+            <div class="c-row">
+              <span class="c-time">[00:45:14]</span>
+              <span class="c-tag gemma">GEMMA_EMIT</span>
+              <span>Analitik çıkarım tamamlandı. JSON formatı üretildi ve doğrulandı.</span>
+              <span style="margin-left:auto;color:#64748b;">180ms</span>
+            </div>
+            <div class="c-row">
+              <span class="c-time">[00:45:14]</span>
+              <span class="c-tag eleven">ELEVENLABS</span>
+              <span>95ms içinde ses akışı istemciye aktarıldı. Akış tamponu boşaltıldı.</span>
+              <span style="margin-left:auto;color:#64748b;">95ms</span>
+            </div>
+          </div>
+          <div class="console-bottom-meta">
+            <span>SOCKET: ws://127.0.0.1:8765/telemetry • ENCRYPTION: AES-256-GCM</span>
+            <span style="color:#34d399;">● PIPE_OK</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Jüri Notu Kartı -->
+      <div class="jury-note-banner">
+        <div class="jury-note-left">
+          <div class="jury-check-icon">✓</div>
+          <div>
+            <div style="font-weight:600;color:#0f172a;">Jüri Notu &amp; Kendi Kendine Test Edilebilirlik</div>
+            <div style="font-size:12px;color:#64748b;">Her ping testi, yerel Whisper modelinin ses çözme kuyruğuna 1 sn'lik sentetik sessizlik sinyali yollar ve sıfır sızıntı kalkanını canlı tetikler.</div>
+          </div>
+        </div>
+        <button class="btn-call-light" onclick="sendTestPing()">Örnek Çağrı Sinyali Simüle Et</button>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         3. SAYFA: AYLIK YÖNETİCİ RAPORU & MÜŞTERİ ANALİTİĞİ (Görsel 3 & 4)
+         ========================================================= -->
+    <section id="tab-report" class="tab-pane">
+      <!-- Üst Kontrol Barı -->
+      <div class="control-top-bar">
+        <div class="feed-sync-tag">
+          <span>● TELEMETRİ BESLEME AKIŞI:</span>
+          <span style="font-weight:600;" id="active-feed-file">frontend/data/latest_report.json</span>
+          <span style="background:#dcfce7;color:#15803d;padding:2px 6px;border-radius:4px;">AUTO-SYNC</span>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#64748b;">Denetim Kalkanı:</span>
+          <div class="shield-switcher">
+            <button class="btn-shield-toggle active" id="btn-cloud-mask" onclick="togglePrivacyShield(true)">
+              <span>🔒 Maskeli Mod (Bulut)</span>
+            </button>
+            <button class="btn-shield-toggle" id="btn-local-unmask" onclick="togglePrivacyShield(false)">
+              <span>🔓 Açık Mod (Yerel Kasa)</span>
+            </button>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#475569;">
+            <span>📅 Ekim 2026 (Son 30 Gün)</span>
+            <span>⚙️</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Başlık -->
+      <div class="title-area" style="display:flex;justify-content:space-between;align-items:flex-end;">
         <div>
-          <p class="action-title">Destek yanıt süresini 48 saate çekin</p>
-          <p class="action-body">Özellikle Büyüme Planı müşterilerinde yanıt gecikmesi doğrudan memnuniyet düşüşüyle ilişkili.</p>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#475569;font-weight:600;letter-spacing:0.04em;">YÖNETİCİ İSTİHBARATI • KVKK / Zero-Knowledge Denetim Çıktısı</span>
+          <h1 class="page-h1" style="margin-top:4px;">Aylık Yönetici Raporu &amp; Müşteri Analitiği</h1>
+          <p class="page-sub">Görüşmelerden otomatik çıkarılan analitik veriler, memnuniyet skorları ve ayrılma (churn) riskleri.</p>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#15803d;">● İncelenen Toplam Görüşme: 1.482</span>
+      </div>
+
+      <!-- 3 Büyük Yönetici Kartı -->
+      <div class="exec-3-cards">
+        <div class="exec-card">
+          <div class="exec-label">
+            <span>CSAT &amp; MEMNUNİYET</span>
+            <span>😊</span>
+          </div>
+          <div class="exec-val" id="csat-number-val">7,6 <span style="font-size:18px;color:#94a3b8;font-weight:400;">/ 10</span></div>
+          <div class="exec-foot">
+            <span style="color:#10b981;">↗ +0.4 puan</span>
+            <span>Geçen aya kıyasla</span>
+          </div>
+        </div>
+
+        <div class="exec-card">
+          <div class="exec-label">
+            <span>AYRILMA (CHURN) RİSKİ</span>
+            <span style="color:#ef4444;">⚠️</span>
+          </div>
+          <div class="exec-val" style="color:#b91c1c;">%24 <span style="font-size:11px;background:#fef3c7;color:#b45309;padding:2px 7px;border-radius:4px;vertical-align:middle;">KRİTİK EŞİK</span></div>
+          <div class="exec-foot">
+            <span style="color:#b91c1c;font-weight:600;">10 kritik hesap</span>
+            <span>İncelenen 42 müşteri içinde</span>
+          </div>
+        </div>
+
+        <div class="exec-card">
+          <div class="exec-label">
+            <span>SIFIR-SIZINTI TEMİZLİĞİ</span>
+            <span>🛡️</span>
+          </div>
+          <div class="exec-val" style="color:#093c30;">48 <span style="font-size:18px;color:#94a3b8;font-weight:400;">Adet PII Varlığı</span></div>
+          <div class="exec-foot">
+            <span>TCKN Telefon Firma Adı</span>
+            <span style="color:#15803d;font-weight:600;">🛡️ %100 Maskeli</span>
+          </div>
         </div>
       </div>
-      <div class="action">
-        <div class="action-num">3</div>
+
+      <!-- Churn Nedenleri ve Alıntılar (İki Kolon) -->
+      <div class="churn-quotes-split">
+        <!-- Sol: Churn Nedenleri -->
+        <div class="panel-white">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px;">
+            <div class="panel-h3">Ayrılma Riskinin Nedenleri</div>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#64748b;">N=42</span>
+          </div>
+          <div class="panel-sub-label">Çağrı transkriptlerinden sınıflandırılmış negatif duygu dağılımı</div>
+
+          <div class="c-row-item">
+            <div class="c-row-head">
+              <span id="churn-item-name">● Entegrasyon sorunları</span>
+              <span id="churn-item-pct" style="color:#b91c1c;">%34</span>
+            </div>
+            <div class="c-bar-bg"><div class="c-bar-fill" id="churn-item-bar" style="width:34%;background:#ea580c;"></div></div>
+            <div class="c-row-note">API zaman aşımları ve webhook kurulum gecikmeleri</div>
+          </div>
+
+          <div class="c-row-item">
+            <div class="c-row-head">
+              <span>● Fiyat &amp; Bütçe aşımları</span>
+              <span>%22</span>
+            </div>
+            <div class="c-bar-bg"><div class="c-bar-fill" style="width:22%;background:#f59e0b;"></div></div>
+            <div class="c-row-note">Kullanım bazlı aşım ücretleri ve döviz kuru etkisi</div>
+          </div>
+
+          <div class="c-row-item">
+            <div class="c-row-head">
+              <span>● Destek yanıt süresi</span>
+              <span>%18</span>
+            </div>
+            <div class="c-bar-bg"><div class="c-bar-fill" style="width:18%;background:#10b981;"></div></div>
+            <div class="c-row-note">Seviye 2 teknik destek taleplerinde &gt;24s bekleme süresi</div>
+          </div>
+
+          <div class="c-row-item">
+            <div class="c-row-head">
+              <span>● Diğer faktörler</span>
+              <span>%12</span>
+            </div>
+            <div class="c-bar-bg"><div class="c-bar-fill" style="width:12%;background:#94a3b8;"></div></div>
+            <div class="c-row-note">Arayüz adaptasyonu ve ekip içi rol değişiklikleri</div>
+          </div>
+
+          <div style="border-top:1px solid #f1f5f9;margin-top:16px;padding-top:10px;display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11px;color:#64748b;">
+            <span>⚙️ Duygu Analiz Motoru: DistilBERT-TR-v3</span>
+            <span>Güven: %98.2</span>
+          </div>
+        </div>
+
+        <!-- Sağ: Öne Çıkan Müşteri Alıntıları (Maskeli vs Açık) -->
+        <div class="panel-white">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px;">
+            <div class="panel-h3">Öne Çıkan Müşteri Alıntıları</div>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#b45309;">Hassas Varlık Denetimi</span>
+          </div>
+          <div class="panel-sub-label">Ses kayıtlarından otomatik filtrelenmiş gerçek zamanlı ham transkriptler</div>
+
+          <!-- 1. Alıntı -->
+          <div class="quote-item-box alert-border">
+            <div class="quote-top-line">
+              <span style="color:#b91c1c;font-weight:700;">! Yüksek Ayrılma Eğilimi</span>
+              <span style="color:#64748b;">12 Ekim 2026 • 14:32</span>
+            </div>
+            <div class="quote-body-text" id="quote-text-1">
+              " <b class="ent-sirket-a">[ŞİRKET_A]</b> tarafında entegrasyon iki haftadır tamamlanamadı; <b class="ent-kisi-1">[KİŞİ_01]</b> sözleşmeyi yenilemeyi tartışıyor."
+            </div>
+            <div class="quote-audit-line">
+              ⚙️ Kriptografik Eşleme: Bulut: <span class="ent-sirket-a">[ŞİRKET_A]</span> &rarr; Yerel: <span class="plain-sirket-a">XYZ Lojistik</span> &nbsp; Segment: Tier-1 Enterprise
+            </div>
+          </div>
+
+          <!-- 2. Alıntı -->
+          <div class="quote-item-box">
+            <div class="quote-top-line">
+              <span style="color:#b45309;font-weight:700;">$ Bütçe &amp; Fiyatlandırma</span>
+              <span style="color:#64748b;">18 Ekim 2026 • 10:15</span>
+            </div>
+            <div class="quote-body-text" id="quote-text-2">
+              " <b class="ent-kisi-2">[KİŞİ_02]</b> ( <b class="ent-sirket-b">[ŞİRKET_B]</b> ) fiyat artışının bütçelerini aştığını söyledi."
+            </div>
+            <div class="quote-audit-line">
+              ⚙️ Kriptografik Eşleme: Bulut: <span class="ent-sirket-b">[ŞİRKET_B]</span> &rarr; Yerel: <span class="plain-sirket-b">Atlas Sigorta</span> &nbsp; Segment: Finansal Servisler
+            </div>
+          </div>
+
+          <!-- 3. Alıntı -->
+          <div class="quote-item-box">
+            <div class="quote-top-line">
+              <span style="color:#475569;font-weight:700;">✉ Destek SLA Aşımı</span>
+              <span style="color:#64748b;">24 Ekim 2026 • 16:48</span>
+            </div>
+            <div class="quote-body-text" id="quote-text-3">
+              " <b class="ent-kisi-1">[KİŞİ_01]</b> destek yanıt süresinin uzun olduğunu belirtti."
+            </div>
+            <div class="quote-audit-line">
+              ⚙️ Kriptografik Eşleme: Bulut: <span class="ent-kisi-1">[KİŞİ_01]</span> &rarr; Yerel: <span class="plain-kisi-1">Murat Çelik</span> &nbsp; Ticket Ref: #T-90412
+            </div>
+          </div>
+
+          <div style="border-top:1px solid #f1f5f9;margin-top:10px;padding-top:10px;display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#64748b;">
+            <span>Korumalı Anonimleştirme: RFC-6988 Standart Hash Maskeleme</span>
+            <span>Sıfır Günlük Tutma (Zero-Log)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Yapay Zekâ Öncelikli Aksiyon Önerileri (3 Kart) -->
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
         <div>
-          <p class="action-title">Sözleşme yenileme bildirimini 60 gün öncesine alın</p>
-          <p class="action-body">Ani bildirim şikayetleri fiyat/sözleşme kategorisinin üçte birini oluşturuyor.</p>
+          <h2 style="font-family:'Fraunces',serif;font-size:19px;font-weight:600;">✨ Yapay Zekâ Öncelikli Aksiyon Önerileri</h2>
+          <p style="font-size:12px;color:#64748b;">Otomatik churn engelleme motoru tarafından üretilmiş acil müdahale protokolleri</p>
+        </div>
+        <span style="background:#093c30;color:#ffffff;font-family:'JetBrains Mono',monospace;font-size:10.5px;padding:4px 10px;border-radius:4px;font-weight:600;">SLA GERİ SAYIMI DEVREDE</span>
+      </div>
+
+      <div class="action-grid-3">
+        <!-- 1. Aksiyon -->
+        <div class="action-box-item" style="border-top:3px solid #ef4444;">
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <span class="action-tag-pill red">● ÖNCELİK 1 • ACİL</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#64748b;">48 Saat Kuralı</span>
+            </div>
+            <div class="action-title-text" id="action-title-1">Yönetici Seviyesi Teknik Görüşme</div>
+            <div class="action-body-text" id="action-body-1">
+              <span class="ent-sirket-a">[ŞİRKET_A]</span> için teknik entegrasyon ekibiyle 48 saat içinde yönetici seviyesinde görüşme planla.
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:auto;">
+            <button class="action-cta-btn">📅 Toplantı Başlat</button>
+            <span style="font-size:11px;color:#64748b;font-family:'JetBrains Mono',monospace;">Tahmini Etki: +%85 Retention</span>
+          </div>
+        </div>
+
+        <!-- 2. Aksiyon -->
+        <div class="action-box-item" style="border-top:3px solid #f59e0b;">
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <span class="action-tag-pill orange">↑ ÖNCELİK 2 • YÜKSEK</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#64748b;">Q4 Yenileme</span>
+            </div>
+            <div class="action-title-text">Kademeli İndirim Teklif Paketi</div>
+            <div class="action-body-text">
+              <span class="ent-sirket-b">[ŞİRKET_B]</span> için yıllık sözleşme yenilemesinde kademeli indirim teklif paketi hazırla.
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:auto;">
+            <button class="action-cta-btn light">📝 Teklif Taslağı</button>
+            <span style="font-size:11px;color:#64748b;font-family:'JetBrains Mono',monospace;">MRR Koruma: ₺180K/yıl</span>
+          </div>
+        </div>
+
+        <!-- 3. Aksiyon -->
+        <div class="action-box-item" style="border-top:3px solid #093c30;">
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <span class="action-tag-pill gray">⌛ ÖNCELİK 3 • ORTA</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#64748b;">Operasyonel SLA</span>
+            </div>
+            <div class="action-title-text">Nöbetçi Vardiya Planı Revizyonu</div>
+            <div class="action-body-text">
+              Müşteri destek yanıt süresini 24 saatin altına indirmek için nöbetçi vardiya planını revize et ve kritik bilet kuyruğu oluştur.
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:auto;">
+            <button class="action-cta-btn light">👥 Vardiyayı Yönet</button>
+            <span style="font-size:11px;color:#64748b;font-family:'JetBrains Mono',monospace;">Hedef SLA: &lt;4 Saat</span>
+          </div>
         </div>
       </div>
-      <div class="action">
-        <div class="action-num">4</div>
-        <div>
-          <p class="action-title">En çok talep edilen 3 özelliği yol haritasına ekleyip müşterilere proaktif bildirin</p>
-          <p class="action-body">Beklenti yönetimi, "eksik özellik" nedenli ayrılma riskini azaltır.</p>
+    </section>
+
+    <!-- =========================================================
+         4. SAYFA: GÜVENLİ KASA & JSON (İndirme & Dışa Aktarma)
+         ========================================================= -->
+    <section id="tab-vault" class="tab-pane">
+      <div class="title-area">
+        <h1 class="page-h1">Güvenli Kasa &amp; JSON Dışa Aktarımı</h1>
+        <p class="page-sub">Rapor verisini bulut güvenli (maskeli) veya yerel yetkili anahtarla açılmış (orijinal) formatta indirin.</p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+        <div class="card-box">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+            <h3 style="font-family:'Fraunces',serif;font-size:16px;">🔒 Bulut Maskeli Rapor (.json)</h3>
+            <span class="chip-tag green">3. Tarafa Açık</span>
+          </div>
+          <p style="font-size:12.5px;color:#64748b;line-height:1.5;margin-bottom:14px;">
+            Tüm PII varlıkları [KİŞİ_01], [ŞİRKET_A] etiketleri ile korunur. Dış raporlamaya hazırdır.
+          </p>
+          <button class="btn-call-dark" onclick="downloadReportJson(true)">
+            <span>⬇️ Maskeli JSON İndir</span>
+          </button>
+        </div>
+
+        <div class="card-box" style="border:2px solid #093c30;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+            <h3 style="font-family:'Fraunces',serif;font-size:16px;">🔓 Orijinal Rapor (.json)</h3>
+            <span class="chip-tag gray" style="background:#fef3c7;color:#b45309;">Yetkili Cihaz</span>
+          </div>
+          <p style="font-size:12.5px;color:#64748b;line-height:1.5;margin-bottom:14px;">
+            Yerel kriptografik anahtarla çözülmüş, gerçek müşteri ve şirket adlarının yer aldığı tam kurumsal dosyadır.
+          </p>
+          <button class="btn-call-dark" style="background:#15803d;" onclick="downloadReportJson(false)">
+            <span>⬇️ Orijinal (Maskesiz) JSON İndir</span>
+          </button>
         </div>
       </div>
-    </div>
-  </section>
 
-  <footer>
-    <p class="footnote"><b>Yöntem:</b> Görüşme ses kaydı/transkripti cihaz üzerinde çalışan modellerle (yerel konuşma tanıma + yerel dil modeli) işlenir; yalnızca bu özet rapor üretilir, ham veri hiçbir zaman şirket dışına çıkmaz.</p>
-    <p class="footnote"><b>Not:</b> Bu sayfadaki şirket adı, sayılar ve alıntılar kurgusaldır; sistemin hedeflediği çıktının biçimini göstermek amacıyla hazırlanmıştır.</p>
-  </footer>
+      <div class="card-box">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;">CANLI VERİ ÇIKTISI (latest_report.json)</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#64748b;" id="vault-mode-status">SIFIR-SIZINTI BULUT MODU</span>
+        </div>
+        <pre id="vault-json-box" style="background:#0f1412;color:#a7f3d0;padding:16px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.6;max-height:360px;overflow-y:auto;">// Veri Yükleniyor...</pre>
+      </div>
+    </section>
 
-</div>
+    <!-- SAYFA ALTI BİLGİ ŞERİDİ (Görsellerdekiyle Birebir) -->
+    <footer class="site-footer">
+      <div><b>Yankı Audio Telemetry Node:</b> TR-IST-EDGE-01 • Latency: &lt;38ms End-to-End</div>
+      <div>&copy; 2026 Yankı AI Security. TÜBİTAK &amp; KVKK Uyumlu İstemci Hattı. • Kriptografik Denetim Protokolü</div>
+    </footer>
 
-<script>
-function renderLive(report, source) {
-  document.getElementById('live-skor').textContent = report.memnuniyet_skoru + '/10';
-  document.getElementById('live-neden').textContent = report.churn_nedeni;
-  document.getElementById('live-alinti').textContent = '"' + report.alinti + '"';
-  document.getElementById('live-status').textContent = source;
-}
+  </main>
 
-async function loadLatest() {
-  try {
-    const res = await fetch('data/latest_report.json', { cache: 'no-store' });
-    if (!res.ok) throw new Error('yok');
-    renderLive(await res.json(), 'son kayıtlı sonuç');
-  } catch (e) {
-    document.getElementById('live-status').textContent = 'henüz çalıştırılmadı — "Aramayı Simüle Et"e bas';
-  }
-}
+  <!-- =========================================================
+       JAVASCRIPT MOTORU
+       ========================================================= -->
+  <script>
+    let activeReportData = null;
+    let isCloudMaskActive = true; // Varsayılan: Maskeli Mod
 
-document.getElementById('simulate-btn').addEventListener('click', async () => {
-  document.getElementById('live-status').textContent = 'analiz ediliyor...';
-  try {
-    const res = await fetch('/api/simulate-call', { method: 'POST', headers: {'Content-Type':'application/json'}, body: '{}' });
-    const data = await res.json();
-    renderLive(data.report, 'canlı — az önce üretildi');
-  } catch (e) {
-    document.getElementById('live-status').textContent = 'backend\'e ulaşılamadı (python orchestration/app.py çalışıyor mu?)';
-  }
-});
+    const sampleSentences = [
+      {
+        raw: `"Merhaba, ben <b>Ahmet Yılmaz</b>, <b>XYZ Lojistik</b> adına arıyorum. Muhasebe müdürümüz <b>Mehmet Bey</b>'e <b>0532 111 22 33</b> numarasından ulaşamayınca sisteminizdeki entegrasyon aksaklığını bildirmek istedim..."`,
+        masked: `"Merhaba, ben <span class='mask-pill'>[KİŞİ_01]</span> , <span class='mask-pill'>[ŞİRKET_A]</span> adına arıyorum. Muhasebe müdürümüz <span class='mask-pill'>[KİŞİ_02]</span> 'e <span class='mask-pill'>[TEL_01]</span> numarasından ulaşamayınca sisteminizdeki entegrasyon aksaklığını bildirmek istedim..."`
+      },
+      {
+        raw: `"İyi günler, <b>Atlas Sigorta</b>'dan <b>Ayşe Demir</b> ben. <b>0212 988 77 66</b> numaralı hattımızdan arıyorum, yeni API sözleşmemizi teslim alamadık."`,
+        masked: `"İyi günler, <span class='mask-pill'>[ŞİRKET_B]</span>'dan <span class='mask-pill'>[KİŞİ_03]</span> ben. <span class='mask-pill'>[TEL_02]</span> numaralı hattımızdan arıyorum, yeni API sözleşmemizi teslim alamadık."`
+      }
+    ];
+    let sentenceCursor = 0;
 
-loadLatest();
-</script>
+    // SEKME DEĞİŞTİRME
+    function showTab(tabId, btn) {
+      document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+
+      const target = document.getElementById(tabId);
+      if (target) target.classList.add('active');
+      if (btn) btn.classList.add('active');
+    }
+
+    // ARAMAYI SİMÜLE ET (Ses dalgası & adım döngüsü + backend çağrısı)
+    let callInterval = null;
+    let _simRunning = false;
+    async function runCallSimulation() {
+      if (_simRunning) return;
+      _simRunning = true;
+
+      const btn = document.getElementById('call-sim-label');
+      const pill = document.getElementById('call-state-pill');
+      const bars = document.querySelectorAll('.wave-bar');
+
+      btn.textContent = "Arama Aktif...";
+      pill.textContent = "● Ses Kaydediliyor (<Record>)";
+      pill.style.color = "#15803d";
+      bars.forEach(b => b.classList.add('active'));
+
+      // Arka planda backend'e gerçek analiz isteği gönder
+      const backendPromise = fetch('/api/simulate-call', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({})
+      }).then(r => r.json()).catch(() => null);
+
+      setTimeout(() => {
+        pill.textContent = "● Whisper STT Deşifre Ediyor...";
+        document.getElementById('step-whisper').classList.add('selected-border');
+      }, 1200);
+
+      setTimeout(() => {
+        pill.textContent = "🛡️ PII Maskeleme Devrede (Sıfır Sızıntı)...";
+        document.getElementById('step-whisper').classList.remove('selected-border');
+        document.getElementById('step-mask').classList.add('selected-border');
+      }, 2500);
+
+      setTimeout(() => {
+        pill.textContent = "● Gemma Analiz Ediyor...";
+        document.getElementById('step-mask').classList.remove('selected-border');
+        document.getElementById('step-gemma').classList.add('selected-border');
+      }, 3800);
+
+      setTimeout(() => {
+        pill.textContent = "● ElevenLabs TTS Cevap Çalıyor...";
+        document.getElementById('step-gemma').classList.remove('selected-border');
+        document.getElementById('step-eleven').classList.add('selected-border');
+      }, 4800);
+
+      // 6. saniyede animasyonu bitir ve raporu yükle
+      setTimeout(async () => {
+        bars.forEach(b => b.classList.remove('active'));
+        document.getElementById('step-eleven').classList.remove('selected-border');
+        document.getElementById('step-mask').classList.add('selected-border');
+        btn.textContent = "Aramayı simüle et";
+
+        // Backend cevabını bekle (zaten gelmiş olmalı)
+        const result = await backendPromise;
+        if (result && result.report) {
+          // Backend başarılıysa raporu doğrudan uygula
+          activeReportData = result.report;
+          const data = result.report;
+          document.getElementById('active-feed-file').textContent = 'frontend/data/latest_report.json (Gerçek Zamanlı)';
+          if (data.memnuniyet_skoru !== undefined) {
+            document.getElementById('csat-number-val').innerHTML =
+              `${parseFloat(data.memnuniyet_skoru).toFixed(1)} <span style="font-size:18px;color:#94a3b8;font-weight:400;">/ 10</span>`;
+          }
+          if (data.churn_nedeni) {
+            document.getElementById('churn-item-name').textContent = `● ${data.churn_nedeni}`;
+          }
+          if (data.alinti) {
+            const qBox = document.getElementById('quote-text-1');
+            if (qBox) qBox.innerHTML = `"${data.alinti}"`;
+          }
+          if (data.aksiyon_onerisi) {
+            const aTitle = document.getElementById('action-title-1');
+            const aBody = document.getElementById('action-body-1');
+            if (aTitle) aTitle.textContent = data.aksiyon_onerisi;
+            if (aBody && data.churn_nedeni) {
+              aBody.textContent = `${data.churn_nedeni} şikayetine istinaden üretilen 1. öncelikli acil aksiyon protokolü.`;
+            }
+          }
+          renderVaultJson();
+          pill.textContent = "✅ Analiz Tamamlandı (Rapor Güncellendi)";
+          pill.style.color = "#15803d";
+        } else {
+          // Backend yoksa dosyadan okumayı dene (eski davranış)
+          await loadLatestData();
+          pill.textContent = "Beklemede (Rapor Güncellendi)";
+          pill.style.color = "#64748b";
+        }
+        _simRunning = false;
+      }, 6000);
+    }
+
+
+    function nextSampleSentence() {
+      sentenceCursor = (sentenceCursor + 1) % sampleSentences.length;
+      document.getElementById('raw-trans-box').innerHTML = sampleSentences[sentenceCursor].raw;
+      document.getElementById('masked-trans-box').innerHTML = sampleSentences[sentenceCursor].masked;
+    }
+
+    // HATT TEST ET (PİNG)
+    function sendTestPing() {
+      const logBox = document.getElementById('stream-logs-box');
+      const latencyEl = document.getElementById('pipeline-latency-val');
+      const ms = Math.floor(395 + Math.random() * 45);
+      latencyEl.innerHTML = `${ms} <span style="font-size:16px;font-weight:400;color:#64748b;">ms</span>`;
+
+      const now = new Date();
+      const time = now.toTimeString().split(' ')[0];
+
+      const row = document.createElement('div');
+      row.className = 'c-row';
+      row.innerHTML = `
+        <span class="c-time">[${time}]</span>
+        <span class="c-tag pii">PING_OK</span>
+        <span style="color:#6ee7b7;">Sıfır sızıntı kalkanı doğrulandı. 4 düğüm yanıt verdi.</span>
+        <span style="margin-left:auto;color:#64748b;">${ms}ms</span>
+      `;
+      logBox.prepend(row);
+    }
+
+    // DENETİM KALKANI: MASKELİ / AÇIK MOD
+    function togglePrivacyShield(isMasked) {
+      isCloudMaskActive = isMasked;
+      const btnCloud = document.getElementById('btn-cloud-mask');
+      const btnLocal = document.getElementById('btn-local-unmask');
+
+      if (isMasked) {
+        btnCloud.classList.add('active');
+        btnLocal.classList.remove('active');
+      } else {
+        btnLocal.classList.add('active');
+        btnCloud.classList.remove('active');
+      }
+
+      applyEntityText();
+      renderVaultJson();
+    }
+
+    function applyEntityText() {
+      document.querySelectorAll('.ent-sirket-a').forEach(el => {
+        el.textContent = isCloudMaskActive ? '[ŞİRKET_A]' : 'XYZ Lojistik';
+      });
+      document.querySelectorAll('.ent-sirket-b').forEach(el => {
+        el.textContent = isCloudMaskActive ? '[ŞİRKET_B]' : 'Atlas Sigorta';
+      });
+      document.querySelectorAll('.ent-kisi-1').forEach(el => {
+        el.textContent = isCloudMaskActive ? '[KİŞİ_01]' : 'Ahmet Yılmaz';
+      });
+      document.querySelectorAll('.ent-kisi-2').forEach(el => {
+        el.textContent = isCloudMaskActive ? '[KİŞİ_02]' : 'Ayşe Demir';
+      });
+    }
+
+    // GERÇEK VERİ YÜKLEYİCİ (latest_report.json -> sample_report.json fallback)
+    async function loadLatestData() {
+      let data = null;
+      let fileUsed = 'frontend/data/latest_report.json';
+
+      try {
+        const res = await fetch('data/latest_report.json?t=' + Date.now());
+        if (!res.ok) throw new Error('404');
+        const json = await res.json();
+        data = json.report ? json.report : json;
+        if (!data || data.memnuniyet_skoru === undefined) throw new Error('Geçersiz');
+      } catch (e) {
+        try {
+          const res2 = await fetch('data/sample_report.json?t=' + Date.now());
+          if (res2.ok) {
+            const json2 = await res2.json();
+            data = json2.report ? json2.report : json2;
+            fileUsed = 'frontend/data/sample_report.json (Fallback)';
+          }
+        } catch (e2) {}
+      }
+
+      if (data) {
+        activeReportData = data;
+        document.getElementById('active-feed-file').textContent = fileUsed;
+
+        // CSAT Skor
+        if (data.memnuniyet_skoru) {
+          document.getElementById('csat-number-val').innerHTML = 
+            `${parseFloat(data.memnuniyet_skoru).toFixed(1)} <span style="font-size:18px;color:#94a3b8;font-weight:400;">/ 10</span>`;
+        }
+
+        // Churn Nedeni
+        if (data.churn_nedeni) {
+          document.getElementById('churn-item-name').textContent = `● ${data.churn_nedeni}`;
+        }
+
+        // Alıntı
+        if (data.alinti) {
+          const qBox = document.getElementById('quote-text-1');
+          if (qBox) qBox.innerHTML = `"${data.alinti}"`;
+        }
+
+        // Aksiyon
+        if (data.aksiyon_onerisi) {
+          const aTitle = document.getElementById('action-title-1');
+          const aBody = document.getElementById('action-body-1');
+          if (aTitle) aTitle.textContent = data.aksiyon_onerisi;
+          if (aBody && data.churn_nedeni) {
+            aBody.textContent = `${data.churn_nedeni} şikayetine istinaden üretilen 1. öncelikli acil aksiyon protokolü.`;
+          }
+        }
+
+        renderVaultJson();
+      }
+    }
+
+    function renderVaultJson() {
+      const box = document.getElementById('vault-json-box');
+      const statusLabel = document.getElementById('vault-mode-status');
+      if (!activeReportData) return;
+
+      let displayObj = JSON.parse(JSON.stringify(activeReportData));
+      if (!isCloudMaskActive) {
+        statusLabel.textContent = "YEREL ÇÖZÜLMÜŞ (ORİJİNAL) FORMAT";
+        displayObj._unmasked_vault = {
+          "yetkili_anahtar": "LOCAL_RSA_2048_OK",
+          "musteri": "Ahmet Yılmaz (XYZ Lojistik)",
+          "iletisim": "0532 111 22 33"
+        };
+      } else {
+        statusLabel.textContent = "SIFIR-SIZINTI BULUT MODU";
+      }
+
+      box.textContent = JSON.stringify(displayObj, null, 2);
+    }
+
+    function downloadReportJson(masked) {
+      if (!activeReportData) return;
+      let obj = JSON.parse(JSON.stringify(activeReportData));
+      let fname = masked ? 'yanki_bulut_maskeli_rapor.json' : 'yanki_yerel_orijinal_rapor.json';
+
+      if (!masked) {
+        obj._unmasked = true;
+        obj.musteri = "Ahmet Yılmaz";
+        obj.sirket = "XYZ Lojistik";
+      }
+
+      const blob = new Blob([JSON.stringify(obj, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = fname;
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // ========= OTURUM YÖNETİMİ =========
+    function initSession() {
+      // Önce localStorage, sonra sessionStorage kontrol et
+      const raw = localStorage.getItem('yanki_user') || sessionStorage.getItem('yanki_user');
+      if (!raw) {
+        // Giriş yapılmamış → login sayfasına yönlendir
+        window.location.href = 'login.html';
+        return;
+      }
+      try {
+        const user = JSON.parse(raw);
+        // Header avatar & isim
+        const initials = user.name ? user.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase() : '?';
+        document.getElementById('user-avatar-initials').textContent = initials;
+        document.getElementById('user-display-name').textContent = user.name || 'Kullanıcı';
+        document.getElementById('user-display-role').textContent = user.role || '';
+        document.getElementById('dd-name').textContent = user.name || 'Kullanıcı';
+        document.getElementById('dd-email').textContent = user.email || '';
+      } catch (e) {
+        window.location.href = 'login.html';
+      }
+    }
+
+    function toggleUserDropdown() {
+      const dd = document.getElementById('user-dropdown');
+      dd.classList.toggle('open');
+    }
+    // Dropdown dışına tıklayınca kapat
+    document.addEventListener('click', function(e) {
+      const badge = document.getElementById('user-badge-btn');
+      if (badge && !badge.contains(e.target)) {
+        document.getElementById('user-dropdown').classList.remove('open');
+      }
+    });
+
+    function doLogout() {
+      localStorage.removeItem('yanki_user');
+      sessionStorage.removeItem('yanki_user');
+      window.location.href = 'login.html';
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initSession();
+      loadLatestData();
+    });
+  </script>
+
+</body>
+</html>

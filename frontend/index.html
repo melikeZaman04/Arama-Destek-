@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Yankı — Yönlendiriliyor...</title>
+  <script>
+    if (localStorage.getItem('yanki_user') || sessionStorage.getItem('yanki_user')) {
+      window.location.replace('report.html');
+    } else {
+      window.location.replace('login.html');
+    }
+  </script>
+</head>
+<body style="background:#0c1017; color:#8b949e; font-family:sans-serif; display:flex; align-items:center; justify-content:center; height:100vh; margin:0;">
+  <p>Yankı sistemine yönlendiriliyorsunuz...</p>
+</body>
+</html>
