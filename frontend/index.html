@@ -2,13 +2,12 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="0; url=/login.html">
   <title>Yankı — Yönlendiriliyor...</title>
   <script>
-    if (localStorage.getItem('yanki_user')) {
-      window.location.replace('/report.html');
+    if (localStorage.getItem('yanki_user') || sessionStorage.getItem('yanki_user')) {
+      window.location.replace('report.html');
     } else {
-      window.location.replace('/login.html');
+      window.location.replace('login.html');
     }
   </script>
 </head>

@@ -1711,9 +1711,13 @@
       if (btn) btn.classList.add('active');
     }
 
-    // ARAMAYI SİMÜLE ET (Ses dalgası & adım döngüsü)
+    // ARAMAYI SİMÜLE ET (Ses dalgası & adım döngüsü + backend çağrısı)
     let callInterval = null;
-    function runCallSimulation() {
+    let _simRunning = false;
+    async function runCallSimulation() {
+      if (_simRunning) return;
+      _simRunning = true;
+
       const btn = document.getElementById('call-sim-label');
       const pill = document.getElementById('call-state-pill');
       const bars = document.querySelectorAll('.wave-bar');
@@ -1722,6 +1726,13 @@
       pill.textContent = "● Ses Kaydediliyor (<Record>)";
       pill.style.color = "#15803d";
       bars.forEach(b => b.classList.add('active'));
+
+      // Arka planda backend'e gerçek analiz isteği gönder
+      const backendPromise = fetch('/api/simulate-call', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({})
+      }).then(r => r.json()).catch(() => null);
 
       setTimeout(() => {
         pill.textContent = "● Whisper STT Deşifre Ediyor...";
@@ -1746,16 +1757,52 @@
         document.getElementById('step-eleven').classList.add('selected-border');
       }, 4800);
 
-      setTimeout(() => {
+      // 6. saniyede animasyonu bitir ve raporu yükle
+      setTimeout(async () => {
         bars.forEach(b => b.classList.remove('active'));
         document.getElementById('step-eleven').classList.remove('selected-border');
         document.getElementById('step-mask').classList.add('selected-border');
         btn.textContent = "Aramayı simüle et";
-        pill.textContent = "Beklemede (Rapor Güncellendi)";
-        pill.style.color = "#64748b";
-        loadLatestData();
+
+        // Backend cevabını bekle (zaten gelmiş olmalı)
+        const result = await backendPromise;
+        if (result && result.report) {
+          // Backend başarılıysa raporu doğrudan uygula
+          activeReportData = result.report;
+          const data = result.report;
+          document.getElementById('active-feed-file').textContent = 'frontend/data/latest_report.json (Gerçek Zamanlı)';
+          if (data.memnuniyet_skoru !== undefined) {
+            document.getElementById('csat-number-val').innerHTML =
+              `${parseFloat(data.memnuniyet_skoru).toFixed(1)} <span style="font-size:18px;color:#94a3b8;font-weight:400;">/ 10</span>`;
+          }
+          if (data.churn_nedeni) {
+            document.getElementById('churn-item-name').textContent = `● ${data.churn_nedeni}`;
+          }
+          if (data.alinti) {
+            const qBox = document.getElementById('quote-text-1');
+            if (qBox) qBox.innerHTML = `"${data.alinti}"`;
+          }
+          if (data.aksiyon_onerisi) {
+            const aTitle = document.getElementById('action-title-1');
+            const aBody = document.getElementById('action-body-1');
+            if (aTitle) aTitle.textContent = data.aksiyon_onerisi;
+            if (aBody && data.churn_nedeni) {
+              aBody.textContent = `${data.churn_nedeni} şikayetine istinaden üretilen 1. öncelikli acil aksiyon protokolü.`;
+            }
+          }
+          renderVaultJson();
+          pill.textContent = "✅ Analiz Tamamlandı (Rapor Güncellendi)";
+          pill.style.color = "#15803d";
+        } else {
+          // Backend yoksa dosyadan okumayı dene (eski davranış)
+          await loadLatestData();
+          pill.textContent = "Beklemede (Rapor Güncellendi)";
+          pill.style.color = "#64748b";
+        }
+        _simRunning = false;
       }, 6000);
     }
+
 
     function nextSampleSentence() {
       sentenceCursor = (sentenceCursor + 1) % sampleSentences.length;
