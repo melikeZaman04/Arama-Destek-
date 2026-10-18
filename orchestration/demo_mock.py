@@ -7,7 +7,7 @@ kanitlayan en kucuk demo:
   sabit mock transkript -> gemma.analyze (mock) -> ElevenLabs TTS -> ses dosyasi
 
 Calistirmak icin:
-  pip install elevenlabs
+  pip install -r requirements.txt
   export ELEVENLABS_API_KEY=...
   python orchestration/demo_mock.py
 """
@@ -16,32 +16,35 @@ import os
 import sys
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 from gemma.analyze import _mock_in_progress  # noqa: E402
+
+load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
 OUT_DIR = Path(__file__).resolve().parent / "out"
 OUT_DIR.mkdir(exist_ok=True)
 
 
 def synthesize(text: str, out_path: Path) -> Path:
-    """ElevenLabs TTS: metni sese cevirip out_path'e yazar."""
-    from elevenlabs.client import ElevenLabs
+    """ElevenLabs TTS: metni sese cevirip out_path'e yazar (dogrudan REST cagrisi)."""
+    import requests
 
     api_key = os.environ.get("ELEVENLABS_API_KEY")
     if not api_key:
         raise RuntimeError("ELEVENLABS_API_KEY ortam degiskeni ayarli degil")
 
-    voice_id = os.environ.get("ELEVENLABS_VOICE_ID", "21m00Tcm4TlvDq8ikWAM")  # varsayilan ornek ses
+    voice_id = os.environ.get("ELEVENLABS_VOICE_ID") or "EXAVITQu4vr4xnSDxMaL"  # Sarah - varsayilan ornek ses
 
-    client = ElevenLabs(api_key=api_key)
-    audio = client.text_to_speech.convert(
-        voice_id=voice_id,
-        text=text,
-        model_id="eleven_multilingual_v2",
+    resp = requests.post(
+        f"https://api.elevenlabs.io/v1/text-to-speech/{voice_id}",
+        headers={"xi-api-key": api_key, "Content-Type": "application/json"},
+        json={"text": text, "model_id": "eleven_multilingual_v2"},
     )
+    resp.raise_for_status()
     with open(out_path, "wb") as f:
-        for chunk in audio:
-            f.write(chunk)
+        f.write(resp.content)
     return out_path
 
 

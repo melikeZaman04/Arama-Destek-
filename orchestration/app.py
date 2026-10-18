@@ -20,12 +20,15 @@ import tempfile
 from pathlib import Path
 
 import requests
+from dotenv import load_dotenv
 from flask import Flask, request, Response
 from faster_whisper import WhisperModel
 
 import sys
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 from gemma.analyze import analyze_turn  # noqa: E402
+
+load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
 app = Flask(__name__)
 
@@ -65,22 +68,23 @@ def transcribe(recording_url: str) -> str:
 
 
 def synthesize(text: str) -> str:
-    """ElevenLabs TTS: metni sese cevirir, calinabilir dosya yolunu dondurur."""
-    from elevenlabs.client import ElevenLabs
-
+    """ElevenLabs TTS: metni sese cevirir, calinabilir dosya yolunu dondurur (dogrudan REST cagrisi)."""
     api_key = os.environ.get("ELEVENLABS_API_KEY")
     if not api_key:
         raise RuntimeError("ELEVENLABS_API_KEY ayarli degil (.env dosyasina ekleyin)")
 
-    voice_id = os.environ.get("ELEVENLABS_VOICE_ID", "21m00Tcm4TlvDq8ikWAM")
-    client = ElevenLabs(api_key=api_key)
-    audio = client.text_to_speech.convert(voice_id=voice_id, text=text, model_id="eleven_multilingual_v2")
+    voice_id = os.environ.get("ELEVENLABS_VOICE_ID") or "EXAVITQu4vr4xnSDxMaL"  # Sarah
+
+    resp = requests.post(
+        f"https://api.elevenlabs.io/v1/text-to-speech/{voice_id}",
+        headers={"xi-api-key": api_key, "Content-Type": "application/json"},
+        json={"text": text, "model_id": "eleven_multilingual_v2"},
+    )
+    resp.raise_for_status()
 
     filename = f"turn_{abs(hash(text))}.mp3"
     out_path = AUDIO_OUT_DIR / filename
-    with open(out_path, "wb") as f:
-        for chunk in audio:
-            f.write(chunk)
+    out_path.write_bytes(resp.content)
     return filename
 
 
