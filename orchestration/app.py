@@ -26,13 +26,15 @@ from faster_whisper import WhisperModel
 
 import sys
 sys.path.append(str(Path(__file__).resolve().parent.parent))
-from gemma.analyze import analyze_turn  # noqa: E402
+from gemma.analyze import analyze_turn, _mock_completed  # noqa: E402
 
 load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder=None)
 
-REPORT_OUT_PATH = Path(__file__).resolve().parent.parent / "frontend" / "data" / "latest_report.json"
+ROOT_DIR = Path(__file__).resolve().parent.parent
+FRONTEND_DIR = ROOT_DIR / "frontend"
+REPORT_OUT_PATH = FRONTEND_DIR / "data" / "latest_report.json"
 AUDIO_OUT_DIR = Path(__file__).resolve().parent / "out"
 AUDIO_OUT_DIR.mkdir(exist_ok=True)
 
@@ -94,6 +96,68 @@ def serve_audio(filename):
     from flask import send_from_directory
 
     return send_from_directory(AUDIO_OUT_DIR, filename)
+
+
+# =========================================================
+# FRONTEND SUNUMU (demo icin tek komuttan: python app.py)
+# =========================================================
+
+@app.get("/")
+def index():
+    from flask import send_from_directory
+
+    return send_from_directory(FRONTEND_DIR, "report.html")
+
+
+@app.get("/<path:filename>")
+def serve_frontend(filename):
+    from flask import send_from_directory
+
+    target = FRONTEND_DIR / filename
+    if target.is_file():
+        return send_from_directory(FRONTEND_DIR, filename)
+    return f"Dosya bulunamadi: {filename}", 404
+
+
+# =========================================================
+# TELEFON OLMADAN DEMO: sabit transkript -> gercek zincir
+# =========================================================
+
+DEMO_TRANSCRIPTS = [
+    "Entegrasyon ucuncu haftaya geldi, API dokumantasyonu yetersiz, "
+    "ekibimiz manuel veri girisine geri donduk. Cok memnun degiliz.",
+    "Webhooklar duzgun calismiyor, her gun en az uc-dort hata aliyoruz. "
+    "Destek ekibiniz gec donuyor. Fiyat artisi da cabasi oldu, ayrilmak uzere.",
+    "Hizmetten genel olarak memnunuz ama mobil entegrasyon hala beta asamada. "
+    "Rakiplerde bu ozellik cok daha olgun, dusunmemiz gerekiyor.",
+]
+_demo_cursor = 0
+
+
+@app.post("/api/simulate-call")
+def simulate_call():
+    """Telefon olmadan gercek zinciri (Gemma analiz -> JSON rapor) calistirir.
+
+    analyze_turn() henuz hazir degilse (Dilara calisirken) mock'a duser,
+    boylece sunum sirasinda hicbir kosulda patlamaz.
+    """
+    from flask import jsonify
+
+    global _demo_cursor
+    body = request.get_json(silent=True) or {}
+    transcript = body.get("transcript") or DEMO_TRANSCRIPTS[_demo_cursor % len(DEMO_TRANSCRIPTS)]
+    _demo_cursor += 1
+
+    try:
+        result = analyze_turn(transcript)
+    except NotImplementedError:
+        result = _mock_completed()
+
+    report = (result.get("report") if result.get("turn_type") == "completed" else None) or _mock_completed()["report"]
+
+    REPORT_OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+    REPORT_OUT_PATH.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+    return jsonify({"status": "ok", "report": report})
 
 
 @app.post("/voice")

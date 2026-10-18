@@ -328,6 +328,30 @@ footer{
   </header>
 
   <section>
+    <div class="section-head">
+      <h2>Canlı sistem çıktısı</h2>
+      <span class="section-note" id="live-status">backend'e bağlanılıyor...</span>
+    </div>
+    <div class="panel" style="display:flex;flex-direction:column;gap:14px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+        <p style="margin:0;font-size:13.5px;color:var(--ink-2);max-width:56ch;">
+          Bu kart, aşağıdaki mock yıllık raporun aksine, <b>Gemma'nın az önce ürettiği gerçek
+          analiz sonucunu</b> gösterir — orchestration/app.py üzerinden canlı okunur.
+        </p>
+        <button id="simulate-btn" style="font-family:'JetBrains Mono',monospace;font-size:12px;
+          background:var(--accent);color:#fff;border:none;border-radius:8px;padding:10px 16px;
+          cursor:pointer;white-space:nowrap;">Aramayı Simüle Et</button>
+      </div>
+      <div id="live-result" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+        background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;">
+        <div class="kpi"><div class="kpi-label">Memnuniyet skoru</div><div class="kpi-value" id="live-skor">—</div></div>
+        <div class="kpi"><div class="kpi-label">Churn nedeni</div><div class="kpi-value" style="font-size:15px;" id="live-neden">—</div></div>
+        <div class="kpi" style="grid-column:span 2;"><div class="kpi-label">Alıntı</div><div style="font-size:13.5px;margin-top:4px;" id="live-alinti">—</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
     <div class="kpis">
       <div class="kpi">
         <div class="kpi-label">Analiz edilen görüşme</div>
@@ -507,3 +531,35 @@ footer{
   </footer>
 
 </div>
+
+<script>
+function renderLive(report, source) {
+  document.getElementById('live-skor').textContent = report.memnuniyet_skoru + '/10';
+  document.getElementById('live-neden').textContent = report.churn_nedeni;
+  document.getElementById('live-alinti').textContent = '"' + report.alinti + '"';
+  document.getElementById('live-status').textContent = source;
+}
+
+async function loadLatest() {
+  try {
+    const res = await fetch('data/latest_report.json', { cache: 'no-store' });
+    if (!res.ok) throw new Error('yok');
+    renderLive(await res.json(), 'son kayıtlı sonuç');
+  } catch (e) {
+    document.getElementById('live-status').textContent = 'henüz çalıştırılmadı — "Aramayı Simüle Et"e bas';
+  }
+}
+
+document.getElementById('simulate-btn').addEventListener('click', async () => {
+  document.getElementById('live-status').textContent = 'analiz ediliyor...';
+  try {
+    const res = await fetch('/api/simulate-call', { method: 'POST', headers: {'Content-Type':'application/json'}, body: '{}' });
+    const data = await res.json();
+    renderLive(data.report, 'canlı — az önce üretildi');
+  } catch (e) {
+    document.getElementById('live-status').textContent = 'backend\'e ulaşılamadı (python orchestration/app.py çalışıyor mu?)';
+  }
+});
+
+loadLatest();
+</script>
